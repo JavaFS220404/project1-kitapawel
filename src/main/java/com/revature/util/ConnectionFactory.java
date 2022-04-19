@@ -1,6 +1,8 @@
 package com.revature.util;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * <p>This ConnectionFactory class follows the Singleton Design Pattern and facilitates obtaining a connection to a Database for the ERS application.</p>
@@ -9,6 +11,8 @@ import java.sql.Connection;
 public class ConnectionFactory {
 
     private static ConnectionFactory instance;
+    // Connection class object
+    Connection connection = null;
 
     private ConnectionFactory() {
         super();
@@ -31,8 +35,26 @@ public class ConnectionFactory {
     /**
      * <p>The {@link ConnectionFactory#getConnection()} method is responsible for leveraging a specific Database Driver to obtain an instance of the {@link java.sql.Connection} interface.</p>
      * <p>Typically, this is accomplished via the use of the {@link java.sql.DriverManager} class.</p>
+     * @throws SQLException 
+     * @throws ClassNotFoundException 
      */
     public Connection getConnection() {
-        return null;
+    	
+    	// TODO cannot make a mock connection without referring to a real database, which is still out of scope
+    	// ask Tim what are the requirements here or is there a way to create a Connection object without referring to a DB
+    	try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			connection = DriverManager.getConnection("jdbc:mysql://hostname/databaseName", "bbb", "ccc");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+    	return connection;
     }
 }
