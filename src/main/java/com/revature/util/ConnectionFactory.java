@@ -10,10 +10,8 @@ import java.sql.SQLException;
  */
 public class ConnectionFactory {
 
-    private static ConnectionFactory instance;
-    // Connection class object
-    Connection connection = null;
-
+	private static ConnectionFactory instance;
+	
     private ConnectionFactory() {
         super();
     }
@@ -24,8 +22,8 @@ public class ConnectionFactory {
      *
      * {@code ConnectionFactory.getInstance()}
      */
-    public static ConnectionFactory getInstance() {
-        if(instance == null) {
+    public static ConnectionFactory getInstance(){
+		if(instance == null) {
             instance = new ConnectionFactory();
         }
 
@@ -38,23 +36,19 @@ public class ConnectionFactory {
      * @throws SQLException 
      * @throws ClassNotFoundException 
      */
-    public Connection getConnection() {
-    	
-    	// TODO cannot make a mock connection without referring to a real database, which is still out of scope
-    	// ask Tim what are the requirements here or is there a way to create a Connection object without referring to a DB
-    	try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+	public static Connection getConnection() throws SQLException {
+		
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://hostname/databaseName", "bbb", "ccc");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			Class.forName("org.postgresql.Driver");
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-
-    	return connection;
-    }
+		
+		//Syntax = jbdc:postgresql://DBADDRESS:PORTNUMBER/DBNAME
+		String url = "jdbc:postgresql://database-1.cijmqdmg54af.eu-central-1.rds.amazonaws.com:5432/JavaFS220404_db";
+		String user = "postgres";
+		String password = "password";
+		
+		return DriverManager.getConnection(url, user, password);
+	}
 }
