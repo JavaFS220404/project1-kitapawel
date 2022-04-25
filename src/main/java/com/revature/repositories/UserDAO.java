@@ -26,4 +26,6 @@ public class UserDAO {
     public User create(User userToBeRegistered) {
         return userToBeRegistered;
     }
+    
+
 }

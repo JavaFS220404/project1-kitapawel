@@ -27,7 +27,6 @@ public class UserService {
      */
 	public Optional<User> getByUsername(String username) {
 
-		//TODO ask why the tests test the UserDAO class - I get zero interactions for this test from mockito
 		User user = new User(1, username, "genericPassword", Role.EMPLOYEE);
 		
 		Optional<User> opt = Optional.ofNullable(user);
