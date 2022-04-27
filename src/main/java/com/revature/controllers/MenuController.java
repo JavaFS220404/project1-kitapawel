@@ -3,6 +3,8 @@ package com.revature.controllers;
 import java.util.List;
 import java.util.Scanner;
 
+import com.revature.services.AuthService;
+
 public class MenuController {
 	
 	public static Scanner scan = new Scanner(System.in);
@@ -21,8 +23,16 @@ public class MenuController {
 				switchLoop:
 					switch (response) {
 					case "1":
-						// RUN AUTH SERVICE
-						mockLogin();
+						String un;
+						String pass;
+						
+						System.out.println("Please enter username.");
+						response = scan.nextLine();
+						un = response;
+						System.out.println("Please enter password.");
+						response = scan.nextLine();
+						pass = response;
+						login(un, pass);
 						break switchLoop;
 					default:
 						System.out.println("That is not a valid input. Please try again.");
@@ -40,6 +50,11 @@ public class MenuController {
 				+ "0) Quit the application");		
 	}
 
+	
+	private void login(String username, String password) {		
+		AuthService authService = new AuthService();
+		authService.login(username, password);
+	}
 	
 	private void mockLogin() {
 		System.out.println("What type of user are you? \n"
@@ -76,7 +91,6 @@ public class MenuController {
 				break;
 			default:
 				System.out.println("c");
-				response = scan.nextLine();
 				break;
 		}
 	}
