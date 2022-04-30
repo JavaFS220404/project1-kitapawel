@@ -1,7 +1,6 @@
 package com.revature.services;
 
 import com.revature.models.User;
-import com.revature.repositories.UserDAO;
 
 import java.util.Optional;
 
@@ -28,14 +27,8 @@ public class AuthService {
      *     <li>Must return user object if the user logs in successfully.</li>
      * </ul>
      */
-		
-	
     public User login(String username, String password) {
-        
-    	UserDAO userDAO = new UserDAO();
-    	Optional<User> userA = Optional.empty();
-    	userA = userDAO.getByUsername(username);
-
+        return null;
     }
 
     /**
