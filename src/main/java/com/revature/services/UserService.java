@@ -27,7 +27,7 @@ public class UserService {
      */
 	public Optional<User> getByUsername(String username) {
 
-		User user = new User(1, username, "genericPassword", Role.EMPLOYEE);
+		User user = new User(1, username, "genericPassword", Role.EMPLOYEE, "Paul", "Kita", "aav@gg.com", "12345667", "Zerowa 1");
 		
 		Optional<User> opt = Optional.ofNullable(user);
 	    return opt;
