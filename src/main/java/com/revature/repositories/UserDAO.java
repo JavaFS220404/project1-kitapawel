@@ -1,4 +1,5 @@
 package com.revature.repositories;
+import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.util.ConnectionFactory;
 
@@ -16,27 +17,38 @@ public class UserDAO {
     /**
      * Should retrieve a User from the DB with the corresponding username or an empty optional if there is no match.
      */
-    public Optional<User> getByUsername(String username) {
-    	try(Connection conn = ConnectionFactory.getInstance().getConnection()){
-			String sql = "SELECT * FROM homes WHERE home_name = ?;";
-			
-			PreparedStatement statement = conn.prepareStatement(sql);
-			
-			statement.setString(1, username);
-			
+    //public Optional<User> getByUsername(String username) {
+    public User getByUsername(String username) {
+    	
+    	User user = new User(1, username, "genericPassword", Role.EMPLOYEE, "Paul", "Kita", "aav@gg.com", "12345667", "Zerowa 1");
+    	
+    	try(Connection conn = ConnectionFactory.getInstance().getConnection()){    		
+			String sql = "SELECT * FROM ers_users WHERE ers_users_username = ?;";			
+			PreparedStatement statement = conn.prepareStatement(sql);			
+			statement.setString(1, username);						
 			ResultSet result = statement.executeQuery();
-			
 			while(result.next()) {
-				User user = new User();
-				user.setUsername(result.getString("home_name"));
+				user.setId(result.getInt("ers_users_id"));
+				user.setUsername(result.getString("ers_users_username"));
+				user.setPassword(result.getString("ers_users_password"));
+				user.setFirstName(result.getString("ers_users_firstname"));
+				user.setLastName(result.getString("ers_users_lastname"));
+				user.seteMail(result.getString("ers_users_email"));
+				
+				int userRoleId = result.getInt("ers_user_role_id");
+				if(userRoleId == 2) {
+					user.setRole(Role.FINANCE_MANAGER);
+				} else {
+					user.setRole(Role.EMPLOYEE);
+				}
 				//TODO add the rest...getting tired, going to sleep;)
-				return user;
 			}
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
-		}
-		return null;
+		}		
+
+    	return user;
     }
 
     /**
