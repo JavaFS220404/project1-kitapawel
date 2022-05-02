@@ -1,4 +1,5 @@
 package com.revature.repositories;
+
 import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.util.ConnectionFactory;
@@ -61,9 +62,43 @@ public class UserDAO {
      * Note: The userToBeRegistered will have an id=0, and username and password will not be null.
      * Additional fields may be null.
      */
-    public User create(User userToBeRegistered) {
-        return userToBeRegistered;
+    //public User create(User userToBeRegistered) {
+    public boolean createUser(User userToBeRegistered) {
+    	try (Connection conn = ConnectionFactory.getInstance().getConnection()){
+			String sql = "INSERT INTO ers_users (ers_users_username, ers_users_password, ers_users_firstname, "
+					+ "ers_users_lastname, ers_users_email, ers_users_phone, ers_users_address, ers_user_role_id)"
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+			
+			PreparedStatement statement = conn.prepareStatement(sql);
+			
+			int count = 0;
+			statement.setString(++count, userToBeRegistered.getUsername());
+			statement.setString(++count, userToBeRegistered.getPassword());
+			statement.setString(++count, userToBeRegistered.getFirstName());
+			statement.setString(++count, userToBeRegistered.getLastName());
+			statement.setString(++count, userToBeRegistered.geteMail());
+			statement.setString(++count, userToBeRegistered.getPhoneNumber());
+			statement.setString(++count, userToBeRegistered.getAddress());
+			int roleID;
+			if (userToBeRegistered.getRole() == Role.EMPLOYEE) {
+				roleID = 1;
+			} else {
+				roleID = 2;
+			}
+			statement.setInt(++count, roleID);
+			
+			statement.execute();
+			
+			return true;
+			
+		}		
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+    	
+    	//return userToBeRegistered;
     }
-    
 
 }

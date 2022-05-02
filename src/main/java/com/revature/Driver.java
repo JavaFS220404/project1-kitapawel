@@ -1,6 +1,8 @@
 package com.revature;
 
 import com.revature.controllers.MenuController;
+import com.revature.models.Role;
+import com.revature.models.User;
 import com.revature.repositories.UserDAO;
 import com.revature.services.UserService;
 
@@ -10,5 +12,10 @@ public class Driver {
     	UserService us = new UserService();
     	System.out.println(us.getByUsername(null));
     	System.out.println(us.getByUsername("madn"));
+    	
+    	us.createUser();
+    	
+
+    	
     }
 }

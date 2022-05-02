@@ -34,4 +34,13 @@ public class UserService {
 		//Optional<User> opt = Optional.ofNullable(user);
 	    //return user;
 	}
+	
+	public boolean createUser() {
+		User user = new User(1, "Testowy", "testowe", Role.FINANCE_MANAGER, "Jan", "Nowak", "test@test.com", "11-11-11-11", "Testowa 10");
+		//userDAO.createUser(user);
+		if (userDAO.createUser(user)) {
+			return true;
+		}
+		return false;
+	}
 }
