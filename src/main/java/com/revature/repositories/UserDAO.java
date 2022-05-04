@@ -18,8 +18,8 @@ public class UserDAO {
     /**
      * Should retrieve a User from the DB with the corresponding username or an empty optional if there is no match.
      */
-    //public Optional<User> getByUsername(String username) {
-    public User getByUsername(String username) {
+    public Optional<User> getByUsername(String username) {
+    //public User getByUsername(String username) {
     	
     	User user = new User(1, username, "genericPassword", Role.EMPLOYEE, "Paul", "Kita", "aav@gg.com", "12345667", "Zerowa 1");
     	
@@ -49,7 +49,9 @@ public class UserDAO {
 			e.printStackTrace();
 		}		
 
-    	return user;
+    	Optional<User> opt = Optional.ofNullable(user);
+	    return opt;
+
     }
 
     /**

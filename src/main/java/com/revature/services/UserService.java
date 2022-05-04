@@ -22,17 +22,16 @@ import com.revature.repositories.UserDAO;
  * </ul>
  */
 public class UserService {
-	private UserDAO userDAO = new UserDAO();
+	protected UserDAO userDAO = new UserDAO();
 	/**
 	 *     Should retrieve a User with the corresponding username or an empty optional if there is no match.
      */
-	//public Optional<User> getByUsername(String username) {
-	public User getByUsername(String username) {
-
-		return userDAO.getByUsername(username);
+	public Optional<User> getByUsername(String username) {
+	//public User getByUsername(String username) {
+		//return userDAO.getByUsername(username);
 		
-		//Optional<User> opt = Optional.ofNullable(user);
-	    //return user;
+		Optional<User> opt = userDAO.getByUsername(username);
+	    return opt;
 	}
 	
 	public boolean createUser() {
