@@ -1,11 +1,7 @@
 package com.revature;
 
-import com.revature.controllers.MenuController;
 import com.revature.models.ReimbStatus;
-import com.revature.models.Role;
-import com.revature.models.User;
 import com.revature.repositories.ReimbursementDAO;
-import com.revature.repositories.UserDAO;
 import com.revature.services.ReimbursementService;
 import com.revature.services.UserService;
 
@@ -25,10 +21,10 @@ public class Driver {
     	System.out.println("================================================");
     	
     	ReimbursementService rs = new ReimbursementService();
-    	//rs.getReimbursementsByStatus(ReimbStatus.APPROVED);
-    	//rs.getReimbursementsByStatus(ReimbStatus.DENIED);
+    	rs.getReimbursementsByStatus(ReimbStatus.APPROVED);
+    	rs.getReimbursementsByStatus(ReimbStatus.DENIED);
     	rs.getReimbursementsByStatus(ReimbStatus.PENDING);
-    	rs.createReimbursement();
+    	//rs.createReimbursement();
     	
 
     	

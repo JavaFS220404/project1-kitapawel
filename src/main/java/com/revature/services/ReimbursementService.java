@@ -1,18 +1,16 @@
 package com.revature.services;
 
 import com.revature.models.Reimbursement;
-import com.revature.models.Role;
 import com.revature.models.ReimbStatus;
 import com.revature.models.ReimbType;
 import com.revature.models.User;
 import com.revature.repositories.ReimbursementDAO;
-import com.revature.repositories.UserDAO;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Collections;
+
 import java.util.List;
 
 /**

@@ -90,7 +90,6 @@ public class ReimbursementDAO {
     public List<Reimbursement> getByStatus(ReimbStatus status) {
     	
     	List<Reimbursement> reimbList = new ArrayList<>();
-    	Reimbursement reimb = new Reimbursement();
     	UserService us = new UserService();
     	
     	try(Connection conn = ConnectionFactory.getInstance().getConnection()){    		
@@ -115,9 +114,8 @@ public class ReimbursementDAO {
 			statement.setInt(1, tempStatusId);						
 			ResultSet result = statement.executeQuery();			
 			
-			
-			
-			while(result.next()) {				
+			while(result.next()) {
+		    	Reimbursement reimb = new Reimbursement();
 				reimb.setId(result.getInt("ers_reimb_id"));
 				reimb.setAmount(result.getDouble("ers_reimb_amount"));
 				reimb.setSubmitted(result.getTimestamp("ers_reimb_submitted"));
