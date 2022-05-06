@@ -13,7 +13,7 @@ package com.revature.models;
  *
  * @author Center of Excellence
  */
-public enum Status {
+public enum ReimbStatus {
 
     PENDING {
         @Override

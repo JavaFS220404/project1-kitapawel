@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.revature.models.Reimbursement;
 import com.revature.models.Role;
-import com.revature.models.Status;
+import com.revature.models.ReimbStatus;
 import com.revature.models.User;
 import com.revature.repositories.ReimbursementDAO;
 
@@ -40,10 +40,10 @@ public class ReimbursementServiceTest {
 		GENERIC_EMPLOYEE_1 = new User(1, "genericEmployee1", "genericPassword", Role.EMPLOYEE);
 		GENERIC_FINANCE_MANAGER_1 = new User(1, "genericManager1", "genericPassword", Role.FINANCE_MANAGER);
 		
-		REIMBURSEMENT_TO_PROCESS = new Reimbursement(2, Status.PENDING, GENERIC_EMPLOYEE_1, null, 150.00);
+		REIMBURSEMENT_TO_PROCESS = new Reimbursement(2, ReimbStatus.PENDING, GENERIC_EMPLOYEE_1, null, 150.00);
 		
-		GENERIC_REIMBURSEMENT_1 = new Reimbursement(1, Status.PENDING, GENERIC_EMPLOYEE_1, null, 100.00);
-		GENERIC_REIMBURSEMENT_2 = new Reimbursement(2, Status.APPROVED, GENERIC_EMPLOYEE_1, GENERIC_FINANCE_MANAGER_1, 150.00);
+		GENERIC_REIMBURSEMENT_1 = new Reimbursement(1, ReimbStatus.PENDING, GENERIC_EMPLOYEE_1, null, 100.00);
+		GENERIC_REIMBURSEMENT_2 = new Reimbursement(2, ReimbStatus.APPROVED, GENERIC_EMPLOYEE_1, GENERIC_FINANCE_MANAGER_1, 150.00);
 		
 		GENERIC_ALL_PENDING_REIMBURSEMENTS = new ArrayList<Reimbursement>();
 		GENERIC_ALL_PENDING_REIMBURSEMENTS.add(GENERIC_REIMBURSEMENT_1);
@@ -54,7 +54,7 @@ public class ReimbursementServiceTest {
 		when(reimbursementDAO.getById(anyInt())).thenReturn(Optional.of(GENERIC_REIMBURSEMENT_1));
 		when(reimbursementDAO.update(any())).thenReturn(GENERIC_REIMBURSEMENT_2);
 		
-		assertEquals(GENERIC_REIMBURSEMENT_2, reimbursementService.process(REIMBURSEMENT_TO_PROCESS, Status.APPROVED, GENERIC_FINANCE_MANAGER_1));
+		assertEquals(GENERIC_REIMBURSEMENT_2, reimbursementService.process(REIMBURSEMENT_TO_PROCESS, ReimbStatus.APPROVED, GENERIC_FINANCE_MANAGER_1));
 		
 		verify(reimbursementDAO).getById(REIMBURSEMENT_TO_PROCESS.getId());
 		verify(reimbursementDAO).update(REIMBURSEMENT_TO_PROCESS);
@@ -64,8 +64,8 @@ public class ReimbursementServiceTest {
 	public void testGetReimbursementByStatusPassesWhenReimbursementsAreSuccessfullyReturned() {
 		when(reimbursementDAO.getByStatus(any())).thenReturn(GENERIC_ALL_PENDING_REIMBURSEMENTS);
 		
-		assertEquals(GENERIC_ALL_PENDING_REIMBURSEMENTS, reimbursementService.getReimbursementsByStatus(Status.PENDING));
+		assertEquals(GENERIC_ALL_PENDING_REIMBURSEMENTS, reimbursementService.getReimbursementsByStatus(ReimbStatus.PENDING));
 		
-		verify(reimbursementDAO).getByStatus(Status.PENDING);
+		verify(reimbursementDAO).getByStatus(ReimbStatus.PENDING);
 	}
 }

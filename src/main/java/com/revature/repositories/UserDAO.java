@@ -19,7 +19,6 @@ public class UserDAO {
      * Should retrieve a User from the DB with the corresponding username or an empty optional if there is no match.
      */
     public Optional<User> getByUsername(String username) {
-    //public User getByUsername(String username) {
     	
     	User user = new User(1, username, "genericPassword", Role.EMPLOYEE, "Paul", "Kita", "aav@gg.com", "12345667", "Zerowa 1");
     	
@@ -51,8 +50,43 @@ public class UserDAO {
 
     	Optional<User> opt = Optional.ofNullable(user);
 	    return opt;
-
     }
+    
+   public User getByUserID(int userID) {
+    	
+    	User user = new User();
+    	
+    	try(Connection conn = ConnectionFactory.getInstance().getConnection()){    		
+			String sql = "SELECT * FROM ers_users WHERE ers_users_id = ?;";			
+			PreparedStatement statement = conn.prepareStatement(sql);			
+			statement.setInt(1, userID);						
+			ResultSet result = statement.executeQuery();
+			while(result.next()) {
+				user.setId(result.getInt("ers_users_id"));
+				user.setUsername(result.getString("ers_users_username"));
+				user.setPassword(result.getString("ers_users_password"));
+				user.setFirstName(result.getString("ers_users_firstname"));
+				user.setLastName(result.getString("ers_users_lastname"));
+				user.seteMail(result.getString("ers_users_email"));
+				
+				int userRoleId = result.getInt("ers_user_role_id");
+				if(userRoleId == 2) {
+					user.setRole(Role.FINANCE_MANAGER);
+				} else {
+					user.setRole(Role.EMPLOYEE);
+				}
+				//TODO add the rest...getting tired, going to sleep;)
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}		
+
+    	//Optional<User> opt = Optional.ofNullable(user);
+	    return user;
+    }    
+    
+    
 
     /**
      * <ul>

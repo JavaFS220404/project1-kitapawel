@@ -1,7 +1,7 @@
 package com.revature.services;
 
 import com.revature.models.Reimbursement;
-import com.revature.models.Status;
+import com.revature.models.ReimbStatus;
 import com.revature.models.User;
 
 import java.util.Collections;
@@ -40,14 +40,14 @@ public class ReimbursementService {
      * The Resolver should be null. Additional fields may be null.
      * After processing, the reimbursement will have its status changed to either APPROVED or DENIED.
      */
-    public Reimbursement process(Reimbursement unprocessedReimbursement, Status finalStatus, User resolver) {
+    public Reimbursement process(Reimbursement unprocessedReimbursement, ReimbStatus finalStatus, User resolver) {
         return null;
     }
 
     /**
      * Should retrieve all reimbursements with the correct status.
      */
-    public List<Reimbursement> getReimbursementsByStatus(Status status) {
+    public List<Reimbursement> getReimbursementsByStatus(ReimbStatus status) {
     	
         return Collections.emptyList();
     }

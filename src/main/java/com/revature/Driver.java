@@ -3,6 +3,7 @@ package com.revature;
 import com.revature.controllers.MenuController;
 import com.revature.models.Role;
 import com.revature.models.User;
+import com.revature.repositories.ReimbursementDAO;
 import com.revature.repositories.UserDAO;
 import com.revature.services.UserService;
 
@@ -13,8 +14,10 @@ public class Driver {
     	System.out.println(us.getByUsername(null));
     	System.out.println(us.getByUsername("madn"));
     	
-    	us.createUser();
+    	//us.createUser();
     	
+    	ReimbursementDAO rd = new ReimbursementDAO();
+    	rd.getById(12314);
 
     	
     }

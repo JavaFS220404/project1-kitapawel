@@ -42,4 +42,12 @@ public class UserService {
 		}
 		return false;
 	}
+	
+	public User getByUserID(int userID) {
+	//public User getByUsername(String username) {
+		return userDAO.getByUserID(userID);
+		
+		//Optional<User> opt = userDAO.getByUsername(userID);
+	    //return opt;
+	}
 }
