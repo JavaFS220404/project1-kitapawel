@@ -19,7 +19,6 @@ import java.util.Objects;
  */
 public class Reimbursement extends AbstractReimbursement {
 
-	private Blob receipt;
 	private Timestamp submitted;
 	private Timestamp resolved;
 	private String description;	
@@ -37,22 +36,20 @@ public class Reimbursement extends AbstractReimbursement {
         super(id, reimbStatus, author, resolver, amount);
     }
     
-    public Reimbursement(int id, double amount, Timestamp submitted, Timestamp resolved, String description, Blob receipt, User author, User resolver, ReimbStatus reimbStatus, ReimbType reimbType) {
+    public Reimbursement(double amount, Timestamp submitted, String description, User author, ReimbStatus reimbStatus, ReimbType reimbType) {
+        super(reimbStatus, author, amount);
+        this.submitted = submitted;
+        this.description = description;
+        this.reimbType = reimbType;
+    }
+    
+    public Reimbursement(int id, double amount, Timestamp submitted, Timestamp resolved, String description, User author, User resolver, ReimbStatus reimbStatus, ReimbType reimbType) {
         super(id, reimbStatus, author, resolver, amount);
-        this.receipt = receipt;
         this.submitted = submitted;
         this.resolved = resolved;
         this.description = description;
         this.reimbType = reimbType;
     }
-
-	public Blob getReceipt() {
-		return receipt;
-	}
-
-	public void setReceipt(Blob receipt) {
-		this.receipt = receipt;
-	}
 
 	public Timestamp getSubmitted() {
 		return submitted;
@@ -109,7 +106,7 @@ public class Reimbursement extends AbstractReimbursement {
 
 	@Override
 	public String toString() {
-		return "Reimbursement [ID=" + super.getId() + ", receipt=" + receipt + ", submitted=" + submitted + ", resolved=" + resolved
+		return "Reimbursement [ID=" + super.getId() + ", submitted=" + submitted + ", resolved=" + resolved
 				+ ", description=" + description + ", reimbType=" + reimbType + ", author=" + super.getAuthor() + ", resolver=" + super.getResolver() + ", status=" + super.getStatus() + ", type=" + reimbType + "]";
 	}    
     

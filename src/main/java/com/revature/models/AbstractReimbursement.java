@@ -30,6 +30,13 @@ public class AbstractReimbursement {
     public AbstractReimbursement() {
         super();
     }
+    
+    public AbstractReimbursement(ReimbStatus status, User author, double amount) {
+        super();
+        this.status = status;
+        this.author = author;
+        this.amount = amount;
+    }
 
     public AbstractReimbursement(int id, ReimbStatus status, User author, User resolver, double amount) {
         super();

@@ -41,7 +41,6 @@ public class ReimbursementDAO {
 				reimb.setSubmitted(result.getTimestamp("ers_reimb_submitted"));
 				reimb.setResolved(result.getTimestamp("ers_reimb_resolved"));
 				reimb.setDescription(result.getString("ers_reimb_descr"));
-				reimb.setReceipt(result.getBlob("ers_reimb_receipt"));
 
 				int tempUserID = result.getInt("ers_reimb_author");
 				User tempUser = us.getByUserID(tempUserID);
@@ -124,7 +123,6 @@ public class ReimbursementDAO {
 				reimb.setSubmitted(result.getTimestamp("ers_reimb_submitted"));
 				reimb.setResolved(result.getTimestamp("ers_reimb_resolved"));
 				reimb.setDescription(result.getString("ers_reimb_descr"));
-				reimb.setReceipt(result.getBlob("ers_reimb_receipt"));
 
 				int tempUserID = result.getInt("ers_reimb_author");
 				User tempUser = us.getByUserID(tempUserID);
@@ -165,6 +163,53 @@ public class ReimbursementDAO {
     	return reimbList;
     }
 
+    public boolean createReimbursement(Reimbursement reimbursementToBeRegistered) {
+    	
+    	try (Connection conn = ConnectionFactory.getInstance().getConnection()){
+			String sql = "INSERT INTO ers_reimbursements (ers_reimb_amount, ers_reimb_submitted, ers_reimb_resolved, "
+					+ "ers_reimb_descr, ers_reimb_author, ers_reimb_status_id, ers_reimb_type_id)"
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+			
+			PreparedStatement statement = conn.prepareStatement(sql);
+			
+			int count = 0;
+			//statement.setInt(++count, 1);
+			statement.setDouble(++count, reimbursementToBeRegistered.getAmount());
+			statement.setTimestamp(++count, reimbursementToBeRegistered.getSubmitted());
+			statement.setTimestamp(++count, null);
+			statement.setString(++count, reimbursementToBeRegistered.getDescription());
+
+			int tempVar = 1;
+			//TODO get logged in user's ID
+			statement.setInt(++count, tempVar);
+			
+			//if (reimbursementToBeRegistered.getStatus() == ReimbStatus.APPROVED) {tempVar = 1;}
+			//else if(reimbursementToBeRegistered.getStatus() == ReimbStatus.DENIED) {tempVar = 2;}
+			//else {tempVar = 3;}
+			statement.setInt(++count, 3); // hardcoded as we create with pending always
+			
+			if (reimbursementToBeRegistered.getReimbType() == ReimbType.FOOD) {tempVar = 1;}
+			else if(reimbursementToBeRegistered.getReimbType() == ReimbType.LODGING) {tempVar = 2;}
+			else if(reimbursementToBeRegistered.getReimbType() == ReimbType.TRAVEL) {tempVar = 3;}
+			else {tempVar = 4;}
+			statement.setInt(++count, tempVar);
+			
+			statement.execute();
+			
+			return true;
+			
+		}		
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+    	
+    	//return userToBeRegistered;
+    }
+    
+    
+    
     /**
      * <ul>
      *     <li>Should Update an existing Reimbursement record in the DB with the provided information.</li>

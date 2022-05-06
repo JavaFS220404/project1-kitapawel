@@ -15,6 +15,7 @@ public class Driver {
     	UserService us = new UserService();
     	System.out.println(us.getByUsername(null));
     	System.out.println(us.getByUsername("madn"));
+    	System.out.println(us.getByUserID(4));
     	
     	//us.createUser();
     	
@@ -27,6 +28,7 @@ public class Driver {
     	//rs.getReimbursementsByStatus(ReimbStatus.APPROVED);
     	//rs.getReimbursementsByStatus(ReimbStatus.DENIED);
     	rs.getReimbursementsByStatus(ReimbStatus.PENDING);
+    	rs.createReimbursement();
     	
 
     	

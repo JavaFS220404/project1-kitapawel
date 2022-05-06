@@ -27,8 +27,6 @@ public class UserService {
 	 *     Should retrieve a User with the corresponding username or an empty optional if there is no match.
      */
 	public Optional<User> getByUsername(String username) {
-	//public User getByUsername(String username) {
-		//return userDAO.getByUsername(username);
 		
 		Optional<User> opt = userDAO.getByUsername(username);
 	    return opt;
@@ -36,7 +34,6 @@ public class UserService {
 	
 	public boolean createUser() {
 		User user = new User(1, "Testowy", "testowe", Role.FINANCE_MANAGER, "Jan", "Nowak", "test@test.com", "11-11-11-11", "Testowa 10");
-		//userDAO.createUser(user);
 		if (userDAO.createUser(user)) {
 			return true;
 		}
