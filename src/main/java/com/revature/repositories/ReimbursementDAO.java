@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -71,7 +72,6 @@ public class ReimbursementDAO {
 					reimb.setReimbType(ReimbType.OTHER);
 				}
 
-				//TODO add the rest...getting tired, going to sleep;)
 			}
 
 		}catch(SQLException e) {
@@ -89,7 +89,80 @@ public class ReimbursementDAO {
      * Should retrieve a List of Reimbursements from the DB with the corresponding Status or an empty List if there are no matches.
      */
     public List<Reimbursement> getByStatus(ReimbStatus status) {
-        return Collections.emptyList();
+    	
+    	List<Reimbursement> reimbList = new ArrayList<>();
+    	Reimbursement reimb = new Reimbursement();
+    	UserService us = new UserService();
+    	
+    	try(Connection conn = ConnectionFactory.getInstance().getConnection()){    		
+			String sql = "SELECT * FROM ers_reimbursements WHERE ers_reimb_status_id = ?;";			
+			PreparedStatement statement = conn.prepareStatement(sql);			
+			
+			int tempStatusId;
+			switch(status){
+				case APPROVED:
+					tempStatusId = 1;
+					break;
+				case DENIED:
+					tempStatusId = 2;
+					break;
+				case PENDING:
+					tempStatusId = 3;
+					break;
+				default:
+					tempStatusId = 3;
+					break;
+			}			
+			statement.setInt(1, tempStatusId);						
+			ResultSet result = statement.executeQuery();			
+			
+			
+			
+			while(result.next()) {				
+				reimb.setId(result.getInt("ers_reimb_id"));
+				reimb.setAmount(result.getDouble("ers_reimb_amount"));
+				reimb.setSubmitted(result.getTimestamp("ers_reimb_submitted"));
+				reimb.setResolved(result.getTimestamp("ers_reimb_resolved"));
+				reimb.setDescription(result.getString("ers_reimb_descr"));
+				reimb.setReceipt(result.getBlob("ers_reimb_receipt"));
+
+				int tempUserID = result.getInt("ers_reimb_author");
+				User tempUser = us.getByUserID(tempUserID);
+				reimb.setAuthor(tempUser);
+
+				tempUserID = result.getInt("ers_reimb_resolver");
+				tempUser = us.getByUserID(tempUserID);
+				reimb.setResolver(tempUser);
+				
+
+				int reimbStatusID = result.getInt("ers_reimb_status_id");
+				if(reimbStatusID == 1) {
+					reimb.setStatus(ReimbStatus.APPROVED);
+				} else if (reimbStatusID == 2) {
+					reimb.setStatus(ReimbStatus.DENIED);
+				} else {
+					reimb.setStatus(ReimbStatus.PENDING);
+				}
+
+				int reimbTypeID = result.getInt("ers_reimb_type_id");
+				if(reimbTypeID == 1) {
+					reimb.setReimbType(ReimbType.FOOD);
+				} else if (reimbTypeID == 2) {
+					reimb.setReimbType(ReimbType.LODGING);
+				} else if (reimbTypeID == 3) {
+					reimb.setReimbType(ReimbType.TRAVEL);
+				} else {
+					reimb.setReimbType(ReimbType.OTHER);
+				}				
+				
+				reimbList.add(reimb);
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return reimbList;
     }
 
     /**

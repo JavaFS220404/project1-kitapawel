@@ -3,6 +3,8 @@ package com.revature.services;
 import com.revature.models.Reimbursement;
 import com.revature.models.ReimbStatus;
 import com.revature.models.User;
+import com.revature.repositories.ReimbursementDAO;
+import com.revature.repositories.UserDAO;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +27,7 @@ import java.util.List;
  * </ul>
  */
 public class ReimbursementService {
-
+	protected ReimbursementDAO rDAO = new ReimbursementDAO();
     /**
      * <ul>
      *     <li>Should ensure that the user is logged in as a Finance Manager</li>
@@ -49,6 +51,7 @@ public class ReimbursementService {
      */
     public List<Reimbursement> getReimbursementsByStatus(ReimbStatus status) {
     	
-        return Collections.emptyList();
+    	System.out.println("Reimbursements by status: " + rDAO.getByStatus(status));
+        return rDAO.getByStatus(status);
     }
 }
