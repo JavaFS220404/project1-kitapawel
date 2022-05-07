@@ -27,8 +27,26 @@ public class AuthService {
      *     <li>Must return user object if the user logs in successfully.</li>
      * </ul>
      */
-    public User login(String username, String password) {
-        return null;
+    //public User login(String username, String password) {
+    public boolean login(String username, String password) {
+    	UserService us = new UserService();
+
+    	Optional<User> opt = us.getByUsername(username);
+    	
+    	User loginUser = opt.get();
+    	
+    	System.out.println(loginUser.getUsername() + loginUser.getPassword());    	
+    	
+    	
+    	if (loginUser == null) {
+    		return false;
+    	} else {
+    		if (loginUser.getPassword().equals(password)) {
+    			return true;
+    		} else {
+    			return false;
+    		}
+    	}
     }
 
     /**
