@@ -1,7 +1,6 @@
 package com.revature.repositories;
 
 import com.revature.models.Reimbursement;
-import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.services.UserService;
 import com.revature.util.ConnectionFactory;
@@ -13,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 

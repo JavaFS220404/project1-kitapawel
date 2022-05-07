@@ -58,7 +58,7 @@ public class User extends AbstractUser {
 	}
 
 	public void setLastName(String lastName) {
-		lastName = lastName;
+		this.lastName = lastName;
 	}
 
 	public String geteMail() {
