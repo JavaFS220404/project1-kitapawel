@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * The ReimbursementService should handle the submission, processing,
@@ -46,17 +47,31 @@ public class ReimbursementService {
      * The Resolver should be null. Additional fields may be null.
      * After processing, the reimbursement will have its status changed to either APPROVED or DENIED.
      */
-    public Reimbursement process(Reimbursement unprocessedReimbursement, ReimbStatus finalStatus, User resolver) {
-        return null;
+    public boolean process(Reimbursement unprocessedReimbursement, ReimbStatus finalStatus, User resolver) {
+        
+    	if (unprocessedReimbursement.getStatus().equals(finalStatus)) {
+    		return false;
+    	} else {
+  
+    		unprocessedReimbursement.setStatus(finalStatus);
+    		unprocessedReimbursement.setResolver(resolver);
+      		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    		unprocessedReimbursement.setResolved(timestamp);
+    		rDAO.update(unprocessedReimbursement);
+    		return true;
+    	}
     }
 
     /**
      * Should retrieve all reimbursements with the correct status.
      */
     public List<Reimbursement> getReimbursementsByStatus(ReimbStatus status) {
-    	
-    	System.out.println("Reimbursements by status: " + rDAO.getByStatus(status));
         return rDAO.getByStatus(status);
+    }
+    
+    public Reimbursement getReimbursementByID(int id) {
+    	Reimbursement reimb = rDAO.getById(id);
+	    return reimb;
     }
     
     //ers_reimbursements (ers_reimb_amount, ers_reimb_submitted, ers_reimb_resolved, "

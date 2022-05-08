@@ -4,7 +4,6 @@ package com.revature.controllers;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import org.json.*;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -41,16 +40,12 @@ public class LoginServlet extends HttpServlet{
 		throws ServletException, IOException{
 		
 		BufferedReader reader = req.getReader();
-
 		StringBuilder stringBuilder = new StringBuilder();
-
 		String line = reader.readLine(); // Gets first line from buffered reader
-		
 		while (line != null) {
 			stringBuilder.append(line);
 			line = reader.readLine(); // Gets the next line, returns null at end of body.
 		}
-
 		String body = new String(stringBuilder);
 		
 		IncomingAuthenticationData user = new ObjectMapper().readValue(body, IncomingAuthenticationData.class);

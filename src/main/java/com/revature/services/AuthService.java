@@ -36,18 +36,14 @@ public class AuthService {
     	User loginUser = opt.get();
     	
     	System.out.println(loginUser.getUsername() + loginUser.getPassword());    	
-    	
-    	
-    	if (loginUser == null) {
-    		return false;
-    	} else {
-    		if (loginUser.getPassword().equals(password)) {
+
+    	if (loginUser.getPassword().equals(password)) {
     			return true;
     		} else {
     			return false;
-    		}
     	}
     }
+
 
     /**
      * <ul>

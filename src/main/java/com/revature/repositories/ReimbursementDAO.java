@@ -20,7 +20,8 @@ public class ReimbursementDAO {
     /**
      * Should retrieve a Reimbursement from the DB with the corresponding id or an empty optional if there is no match.
      */
-	public Optional<Reimbursement> getById(int id) {
+	//public Optional<Reimbursement> getById(int id) {
+	public Reimbursement getById(int id) {
 
 		Reimbursement reimb = new Reimbursement();
 
@@ -75,9 +76,8 @@ public class ReimbursementDAO {
 			e.printStackTrace();
 		}		
 
-		Optional<Reimbursement> optReimb = Optional.ofNullable(reimb);
-		System.out.println(optReimb.toString());
-		return optReimb;
+		//Optional<Reimbursement> optReimb = Optional.ofNullable(reimb);
+		return reimb;
 
 	}
 
@@ -214,6 +214,43 @@ public class ReimbursementDAO {
      * </ul>
      */
     public Reimbursement update(Reimbursement unprocessedReimbursement) {
-    	return null;
+    	try (Connection conn = ConnectionFactory.getInstance().getConnection()){
+			String sql = "UPDATE ers_reimbursements"
+			+ "SET ers_reimb_resolver = ?, ers_reimb_resolved = ?, ers_reimb_status_id = ?"
+			+ "WHERE ers_reimb_id = ?;"
+			+ "VALUES (?, ?, ?, ?)";
+			
+			PreparedStatement prepStatement = conn.prepareStatement(sql);
+			
+			int count = 0;
+
+			prepStatement.setInt(++count, unprocessedReimbursement.getResolver().getId());
+			prepStatement.setTimestamp(++count, unprocessedReimbursement.getResolved());
+			int tempVar = 1;			
+			if (unprocessedReimbursement.getStatus() == ReimbStatus.APPROVED) {tempVar = 1;}
+			else if(unprocessedReimbursement.getStatus() == ReimbStatus.DENIED) {tempVar = 2;}
+			else {tempVar = 3;}
+			prepStatement.setInt(++count, tempVar);
+			prepStatement.setInt (++count, unprocessedReimbursement.getId());
+//			
+//			prepStatement.setInt(1, 4);
+//			prepStatement.setTimestamp(2, unprocessedReimbursement.getResolved());
+//			int tempVar = 1;			
+//			if (unprocessedReimbursement.getStatus() == ReimbStatus.APPROVED) {tempVar = 1;}
+//			else if(unprocessedReimbursement.getStatus() == ReimbStatus.DENIED) {tempVar = 2;}
+//			else {tempVar = 3;}
+//			prepStatement.setInt(3, 2);
+//			prepStatement.setInt (4, 21);
+			
+			prepStatement.execute();
+			
+			return unprocessedReimbursement;
+			
+		}		
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return unprocessedReimbursement;
     }
 }
