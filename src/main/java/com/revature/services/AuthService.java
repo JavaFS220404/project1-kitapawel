@@ -35,7 +35,7 @@ public class AuthService {
     	
     	User loginUser = opt.get();
     	
-    	System.out.println(loginUser.getUsername() + loginUser.getPassword());    	
+    	System.out.println(loginUser.getUsername() + password);    	
 
     	if (loginUser.getPassword().equals(password)) {
     			return true;

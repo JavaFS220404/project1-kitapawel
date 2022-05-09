@@ -1,7 +1,9 @@
 package com.revature;
 
 import com.revature.models.ReimbStatus;
+import com.revature.models.ReimbType;
 import com.revature.models.Reimbursement;
+import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.repositories.ReimbursementDAO;
 import com.revature.services.ReimbursementService;
@@ -15,10 +17,9 @@ public class Driver {
 //    	System.out.println(us.getByUsername("madn"));
 //    	System.out.println(us.getByUserID(4));
 //    	
-//    	us.createUser();
+    	us.createUser("Mom", "Dad", Role.FINANCE_MANAGER, "Anna", "Wanna", "Anna@wanna.k¹p", "123-456", "Topolowa 2");
 //    	
-//    	ReimbursementDAO rd = new ReimbursementDAO();
-//    	rd.getById(12314);
+    	ReimbursementDAO rd = new ReimbursementDAO();
 //    	
     	System.out.println("================================================");
     	
@@ -28,8 +29,8 @@ public class Driver {
 //    	System.out.println(rs.getReimbursementsByStatus(ReimbStatus.DENIED));
 //    	System.out.println(rs.getReimbursementsByStatus(ReimbStatus.PENDING));
 
-    	rs.process(rs.getReimbursementByID(21), ReimbStatus.DENIED, us.getByUserID(4));
-//    	//rs.createReimbursement();
+    	//rs.process(rs.getReimbursementByID(21), ReimbStatus.DENIED, us.getByUserID(4));
+    	//rs.createReimbursement(69.89, "Nowe reimbursmentum", ReimbType.TRAVEL);
     	
 
     	

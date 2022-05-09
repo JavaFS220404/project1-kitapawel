@@ -36,8 +36,8 @@ public class Reimbursement extends AbstractReimbursement {
         super(id, reimbStatus, author, resolver, amount);
     }
     
-    public Reimbursement(double amount, Timestamp submitted, String description, User author, ReimbStatus reimbStatus, ReimbType reimbType) {
-        super(reimbStatus, author, amount);
+    public Reimbursement(double amount, Timestamp submitted, String description, ReimbType reimbType) {
+        super(amount);
         this.submitted = submitted;
         this.description = description;
         this.reimbType = reimbType;

@@ -20,8 +20,8 @@ public class ReimbursementDAO {
     /**
      * Should retrieve a Reimbursement from the DB with the corresponding id or an empty optional if there is no match.
      */
-	//public Optional<Reimbursement> getById(int id) {
-	public Reimbursement getById(int id) {
+	public Optional<Reimbursement> getById(int id) {
+	//public Reimbursement getById(int id) {
 
 		Reimbursement reimb = new Reimbursement();
 
@@ -77,7 +77,7 @@ public class ReimbursementDAO {
 		}		
 
 		//Optional<Reimbursement> optReimb = Optional.ofNullable(reimb);
-		return reimb;
+		return Optional.of(reimb);
 
 	}
 
@@ -162,9 +162,9 @@ public class ReimbursementDAO {
     public boolean createReimbursement(Reimbursement reimbursementToBeRegistered) {
     	
     	try (Connection conn = ConnectionFactory.getInstance().getConnection()){
-			String sql = "INSERT INTO ers_reimbursements (ers_reimb_amount, ers_reimb_submitted, ers_reimb_resolved, "
+			String sql = "INSERT INTO ers_reimbursements (ers_reimb_amount, ers_reimb_submitted, "
 					+ "ers_reimb_descr, ers_reimb_author, ers_reimb_status_id, ers_reimb_type_id)"
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+					+ "VALUES (?, ?, ?, ?, ?, ?)";
 			
 			PreparedStatement statement = conn.prepareStatement(sql);
 			
@@ -172,7 +172,6 @@ public class ReimbursementDAO {
 			//statement.setInt(++count, 1);
 			statement.setDouble(++count, reimbursementToBeRegistered.getAmount());
 			statement.setTimestamp(++count, reimbursementToBeRegistered.getSubmitted());
-			statement.setTimestamp(++count, null);
 			statement.setString(++count, reimbursementToBeRegistered.getDescription());
 
 			int tempVar = 1;

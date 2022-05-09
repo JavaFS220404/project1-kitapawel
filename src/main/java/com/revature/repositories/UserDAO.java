@@ -17,7 +17,7 @@ public class UserDAO {
      */
     public Optional<User> getByUsername(String username) {
     	
-    	User user = new User(1, username, "genericPassword", Role.EMPLOYEE, "Paul", "Kita", "aav@gg.com", "12345667", "Zerowa 1");
+    	User user = new User(username, "genericPassword", Role.EMPLOYEE, "Paul", "Kita", "aav@gg.com", "12345667", "Zerowa 1");
     	
     	try(Connection conn = ConnectionFactory.getInstance().getConnection()){    		
 			String sql = "SELECT * FROM ers_users WHERE ers_users_username = ?;";			
@@ -45,8 +45,8 @@ public class UserDAO {
 			e.printStackTrace();
 		}		
 
-    	Optional<User> opt = Optional.ofNullable(user);
-	    return opt;
+    	//Optional<User> opt = Optional.ofNullable(user);
+	    return Optional.of(user);
     }
     
    public User getByUserID(int userID) {

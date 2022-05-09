@@ -31,8 +31,8 @@ public class UserService {
 	    return opt;
 	}
 	
-	public boolean createUser() {
-		User user = new User(1, "Testowy", "testowe", Role.FINANCE_MANAGER, "Jan", "Nowak", "test@test.com", "11-11-11-11", "Testowa 10");
+	public boolean createUser(String username, String password, Role role, String firstName, String lastName, String email, String phone, String address) {
+		User user = new User(username, password, role, firstName, lastName, email, phone, address);
 		if (userDAO.createUser(user)) {
 			return true;
 		}
