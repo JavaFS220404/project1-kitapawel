@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import com.revature.exceptions.UserDoesNotExistException;
 import com.revature.exceptions.WrongPasswordException;
 import com.revature.models.User;
 
@@ -29,24 +30,26 @@ public class AuthService {
      * </ul>
      */
     public User login(String username, String password) {
-    //public boolean login(String username, String password) {
     	UserService us = new UserService();
 
     	Optional<User> opt = us.getByUsername(username);
-    	
     	User loginUser = opt.get();
     	
-    	System.out.println(loginUser.getUsername() + password);    	
-    	try {
-			if (loginUser.getPassword().equals(password)) {
-				System.out.println("Access Granted! Welcome!");
-				return loginUser;
-			} else {
-				throw new WrongPasswordException("Wrong username or password.");
-			}
-    	} catch(WrongPasswordException e) {
-    		return null;
-    	}    	
+    	if (loginUser != null){
+        	try {
+    			if (loginUser.getPassword().equals(password)) {
+    				System.out.println("Access Granted! Welcome!");
+    				return loginUser;
+    			} else {
+    				throw new WrongPasswordException("Wrong username or password.");
+    			}
+        	} catch(WrongPasswordException e) {
+        		return null;
+        	}    
+    	} else {
+    		throw new UserDoesNotExistException("User does not exist.");
+    	} 	
+	
     }
 
 
