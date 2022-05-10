@@ -15,16 +15,15 @@ public class UserDAO {
     /**
      * Should retrieve a User from the DB with the corresponding username or an empty optional if there is no match.
      */
-    public Optional<User> getByUsername(String username) {
-    	
-    	User user = new User(username, "genericPassword", Role.EMPLOYEE, "Paul", "Kita", "aav@gg.com", "12345667", "Zerowa 1");
-    	
+    public Optional<User> getByUsername(String username) {    	
+    	  	
     	try(Connection conn = ConnectionFactory.getInstance().getConnection()){    		
 			String sql = "SELECT * FROM ers_users WHERE ers_users_username = ?;";			
 			PreparedStatement statement = conn.prepareStatement(sql);			
 			statement.setString(1, username);						
 			ResultSet result = statement.executeQuery();
-			while(result.next()) {
+			User user = new User();
+			if (result.next()) {
 				user.setId(result.getInt("ers_users_id"));
 				user.setUsername(result.getString("ers_users_username"));
 				user.setPassword(result.getString("ers_users_password"));
@@ -38,7 +37,9 @@ public class UserDAO {
 				} else {
 					user.setRole(Role.EMPLOYEE);
 				}
-				//TODO add the rest...getting tired, going to sleep;)
+				
+				Optional<User> optional= Optional.of(user);				
+				return optional;
 			}
 			
 		}catch(SQLException e) {
@@ -46,18 +47,17 @@ public class UserDAO {
 		}		
 
     	//Optional<User> opt = Optional.ofNullable(user);
-	    return Optional.of(user);
+    	return null;
     }
     
    public User getByUserID(int userID) {
-    	
-    	User user = new User();
     	
     	try(Connection conn = ConnectionFactory.getInstance().getConnection()){    		
 			String sql = "SELECT * FROM ers_users WHERE ers_users_id = ?;";			
 			PreparedStatement statement = conn.prepareStatement(sql);			
 			statement.setInt(1, userID);						
 			ResultSet result = statement.executeQuery();
+	    	User user = new User();
 			while(result.next()) {
 				user.setId(result.getInt("ers_users_id"));
 				user.setUsername(result.getString("ers_users_username"));
@@ -72,7 +72,8 @@ public class UserDAO {
 				} else {
 					user.setRole(Role.EMPLOYEE);
 				}
-				//TODO add the rest...getting tired, going to sleep;)
+								
+				return user;
 			}
 			
 		}catch(SQLException e) {
@@ -80,7 +81,7 @@ public class UserDAO {
 		}		
 
     	//Optional<User> opt = Optional.ofNullable(user);
-	    return user;
+	    return null;
     }    
     
     
@@ -95,7 +96,7 @@ public class UserDAO {
      * Note: The userToBeRegistered will have an id=0, and username and password will not be null.
      * Additional fields may be null.
      */
-    //public User create(User userToBeRegistered) {
+    //public User createUser(User userToBeRegistered) {
     public boolean createUser(User userToBeRegistered) {
     	try (Connection conn = ConnectionFactory.getInstance().getConnection()){
 			String sql = "INSERT INTO ers_users (ers_users_username, ers_users_password, ers_users_firstname, "
@@ -122,6 +123,7 @@ public class UserDAO {
 			
 			statement.execute();
 			
+			//return userToBeRegistered;
 			return true;
 			
 		}		

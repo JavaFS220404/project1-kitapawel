@@ -39,7 +39,18 @@ public class UserService {
 		return false;
 	}
 	
+//	public Optional<User> getByUserID(int userID) {
+//		Optional<User> optUser = userDAO.getByUserID(userID);
+//		if(optUser.isPresent()) {
+//			return optUser;
+//		} else {
+//			Optional<User> nullOpt = Optional.of(null);
+//			return nullOpt;
+//		}
+//	}
+	
 	public User getByUserID(int userID) {
-		return userDAO.getByUserID(userID);
+		User user = userDAO.getByUserID(userID);
+		return user;
 	}
 }

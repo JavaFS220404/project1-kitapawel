@@ -1,4 +1,4 @@
-package com.revature.controllers;
+package com.revature.servlets;
 
 
 import java.io.BufferedReader;
@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.services.UserService;
 import com.revature.models.IncomingAuthenticationData;
+import com.revature.models.User;
 import com.revature.services.AuthService;
 
 public class LoginServlet extends HttpServlet{
@@ -52,7 +53,9 @@ public class LoginServlet extends HttpServlet{
 		
 		AuthService authService = new AuthService();
 		
-		if (authService.login(user.getUn(), user.getPwd())){
+		User potentiallyLoggedInUser = authService.login(user.getUn(), user.getPwd()); 
+		
+		if (potentiallyLoggedInUser != null){
 			System.out.println("Login successful");
 			resp.setStatus(201);
 		} else {

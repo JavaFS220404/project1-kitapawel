@@ -1,5 +1,6 @@
 package com.revature.services;
 
+import com.revature.exceptions.WrongPasswordException;
 import com.revature.models.User;
 
 import java.util.Optional;
@@ -27,8 +28,8 @@ public class AuthService {
      *     <li>Must return user object if the user logs in successfully.</li>
      * </ul>
      */
-    //public User login(String username, String password) {
-    public boolean login(String username, String password) {
+    public User login(String username, String password) {
+    //public boolean login(String username, String password) {
     	UserService us = new UserService();
 
     	Optional<User> opt = us.getByUsername(username);
@@ -36,13 +37,19 @@ public class AuthService {
     	User loginUser = opt.get();
     	
     	System.out.println(loginUser.getUsername() + password);    	
-
-    	if (loginUser.getPassword().equals(password)) {
-    			return true;
-    		} else {
-    			return false;
-    	}
+    	try {
+			if (loginUser.getPassword().equals(password)) {
+				System.out.println("Access Granted! Welcome!");
+				return loginUser;
+			} else {
+				throw new WrongPasswordException("Wrong username or password.");
+			}
+    	} catch(WrongPasswordException e) {
+    		return null;
+    	}    	
     }
+
+
 
 
     /**

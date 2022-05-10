@@ -47,17 +47,18 @@ public class ReimbursementService {
      * The Resolver should be null. Additional fields may be null.
      * After processing, the reimbursement will have its status changed to either APPROVED or DENIED.
      */
-    public boolean process(Reimbursement unprocessedReimbursement, ReimbStatus finalStatus, User resolver) {
+    public boolean process(Optional<Reimbursement> unprocessedReimbursement, ReimbStatus finalStatus, User resolver) {
         
-    	if (unprocessedReimbursement.getStatus().equals(finalStatus)) {
+    	Reimbursement reimbursementToProcess = unprocessedReimbursement.get();
+    	if (reimbursementToProcess.getStatus().equals(finalStatus)) {
     		return false;
     	} else {
   
-    		unprocessedReimbursement.setStatus(finalStatus);
-    		unprocessedReimbursement.setResolver(resolver);
+    		reimbursementToProcess.setStatus(finalStatus);
+    		reimbursementToProcess.setResolver(resolver);
       		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-    		unprocessedReimbursement.setResolved(timestamp);
-    		rDAO.update(unprocessedReimbursement);
+      		reimbursementToProcess.setResolved(timestamp);
+    		rDAO.update(reimbursementToProcess);
     		return true;
     	}
     }
@@ -70,8 +71,14 @@ public class ReimbursementService {
     }
     
     public Optional<Reimbursement> getReimbursementByID(int id) {
-    	Optional<Reimbursement> reimb = rDAO.getById(id);
-	    return reimb;
+    
+    	Optional<Reimbursement> optReimb = rDAO.getById(id);
+		if(optReimb.isPresent()) {
+			return optReimb;
+		}
+		Optional<Reimbursement> nullOpt = Optional.of(null);
+		return nullOpt;
+	    
     }
     
     //ers_reimbursements (ers_reimb_amount, ers_reimb_submitted, ers_reimb_resolved, "

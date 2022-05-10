@@ -20,10 +20,7 @@ public class ReimbursementDAO {
     /**
      * Should retrieve a Reimbursement from the DB with the corresponding id or an empty optional if there is no match.
      */
-	public Optional<Reimbursement> getById(int id) {
-	//public Reimbursement getById(int id) {
-
-		Reimbursement reimb = new Reimbursement();
+	public Optional<Reimbursement> getById(int id) {		
 
 		try(Connection conn = ConnectionFactory.getInstance().getConnection()){    		
 			String sql = "SELECT * FROM ers_reimbursements WHERE ers_reimb_id = ?;";			
@@ -33,8 +30,9 @@ public class ReimbursementDAO {
 
 			//Optional<User> user = new Optional<User>();
 			UserService us = new UserService();
-
-			while(result.next()) {				
+			
+			Reimbursement reimb = new Reimbursement();
+			if (result.next()) {				
 				reimb.setId(result.getInt("ers_reimb_id"));
 				reimb.setAmount(result.getDouble("ers_reimb_amount"));
 				reimb.setSubmitted(result.getTimestamp("ers_reimb_submitted"));
@@ -47,7 +45,15 @@ public class ReimbursementDAO {
 
 				tempUserID = result.getInt("ers_reimb_resolver");
 				tempUser = us.getByUserID(tempUserID);
-				reimb.setResolver(tempUser);
+				reimb.setResolver(tempUser);				
+				
+//				int tempUserID = result.getInt("ers_reimb_author");
+//				Optional<User> tempUser = us.getByUserID(tempUserID);
+//				reimb.setAuthor(tempUser.get());
+//
+//				tempUserID = result.getInt("ers_reimb_resolver");
+//				tempUser = us.getByUserID(tempUserID);
+//				reimb.setResolver(tempUser.get());
 				
 
 				int reimbStatusID = result.getInt("ers_reimb_status_id");
@@ -71,13 +77,15 @@ public class ReimbursementDAO {
 				}
 
 			}
+			Optional<Reimbursement> optional= Optional.of(reimb);				
+			return optional;
 
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}		
 
 		//Optional<Reimbursement> optReimb = Optional.ofNullable(reimb);
-		return Optional.of(reimb);
+		return null;
 
 	}
 
@@ -119,14 +127,22 @@ public class ReimbursementDAO {
 				reimb.setSubmitted(result.getTimestamp("ers_reimb_submitted"));
 				reimb.setResolved(result.getTimestamp("ers_reimb_resolved"));
 				reimb.setDescription(result.getString("ers_reimb_descr"));
-
-				int tempUserID = result.getInt("ers_reimb_author");
+				
+				int tempUserID = result.getInt("ers_reimb_author"); 
 				User tempUser = us.getByUserID(tempUserID);
 				reimb.setAuthor(tempUser);
 
 				tempUserID = result.getInt("ers_reimb_resolver");
 				tempUser = us.getByUserID(tempUserID);
 				reimb.setResolver(tempUser);
+
+//				int tempUserID = result.getInt("ers_reimb_author"); 
+//				Optional<User> tempUser = us.getByUserID(tempUserID);
+//				reimb.setAuthor(tempUser.get());
+//
+//				tempUserID = result.getInt("ers_reimb_resolver");
+//				tempUser = us.getByUserID(tempUserID);
+//				reimb.setResolver(tempUser.get());
 				
 
 				int reimbStatusID = result.getInt("ers_reimb_status_id");
@@ -213,16 +229,20 @@ public class ReimbursementDAO {
      * </ul>
      */
     public Reimbursement update(Reimbursement unprocessedReimbursement) {
+
     	try (Connection conn = ConnectionFactory.getInstance().getConnection()){
-			String sql = "UPDATE ers_reimbursements"
-			+ "SET ers_reimb_resolver = ?, ers_reimb_resolved = ?, ers_reimb_status_id = ?"
-			+ "WHERE ers_reimb_id = ?;"
-			+ "VALUES (?, ?, ?, ?)";
+    		String sql = "UPDATE ers_reimbursements "
+			+ "SET ers_reimb_resolver=?, ers_reimb_resolved=?, ers_reimb_status_id = ? "
+			+ "WHERE ers_reimb_id ="+ unprocessedReimbursement.getId() +";";
+			//+ "VALUES (?, ?, ?, ?)";
 			
+    		System.out.println(sql);
+    		
 			PreparedStatement prepStatement = conn.prepareStatement(sql);
 			
 			int count = 0;
-
+			
+	
 			prepStatement.setInt(++count, unprocessedReimbursement.getResolver().getId());
 			prepStatement.setTimestamp(++count, unprocessedReimbursement.getResolved());
 			int tempVar = 1;			
@@ -230,7 +250,6 @@ public class ReimbursementDAO {
 			else if(unprocessedReimbursement.getStatus() == ReimbStatus.DENIED) {tempVar = 2;}
 			else {tempVar = 3;}
 			prepStatement.setInt(++count, tempVar);
-			prepStatement.setInt (++count, unprocessedReimbursement.getId());
 //			
 //			prepStatement.setInt(1, 4);
 //			prepStatement.setTimestamp(2, unprocessedReimbursement.getResolved());
@@ -240,16 +259,16 @@ public class ReimbursementDAO {
 //			else {tempVar = 3;}
 //			prepStatement.setInt(3, 2);
 //			prepStatement.setInt (4, 21);
-			
+
 			prepStatement.execute();
-			
+
 			return unprocessedReimbursement;
 			
 		}		
 		catch(SQLException e) {
 			e.printStackTrace();
 		}
-		
-		return unprocessedReimbursement;
+
+		return null;
     }
 }
