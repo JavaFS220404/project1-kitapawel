@@ -2,6 +2,7 @@ package com.revature.services;
 
 import java.util.Optional;
 
+import com.revature.exceptions.UserDoesNotExistException;
 import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.repositories.UserDAO;
@@ -26,7 +27,7 @@ public class UserService {
 	/**
 	 *     Should retrieve a User with the corresponding username or an empty optional if there is no match.
      */
-	public Optional<User> getByUsername(String username) {		
+	public Optional<User> getByUsername(String username) throws UserDoesNotExistException {		
 		Optional<User> opt = userDAO.getByUsername(username);
 	    return opt;
 	}

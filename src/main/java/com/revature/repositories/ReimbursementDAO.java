@@ -85,7 +85,7 @@ public class ReimbursementDAO {
 		}		
 
 		//Optional<Reimbursement> optReimb = Optional.ofNullable(reimb);
-		return null;
+		return Optional.of(null);
 
 	}
 

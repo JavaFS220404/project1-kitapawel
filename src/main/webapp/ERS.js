@@ -1,55 +1,44 @@
-let loginForm = document.getElementById("loginForm");
-let nothing = document.getElementById("nothing");
-let loginButton = document.getElementById("loginButton");
-const element = document.getElementById("div1");
+const url = "http://localhost:8080/ERS/app/"
 
+let loginbtn = document.getElementById("loginButton");
 
-loginButton.addEventListener('click', login);
-nothing.addEventListener('click', test);
-
-function test(){
-	console.log('test');
- 	const para = document.createElement("p");
-	const node = document.createTextNode("This is the result of the nothing button.");
-	para.appendChild(node);
-	element.appendChild(para);
-
-}
+loginbtn.addEventListener("click", login);
 
 async function login(){
-    
-    let username = document.getElementById("username").value;
-  	let password = document.getElementById("password").value;
+  let uName = document.getElementById("username").value;
+  let pWord = document.getElementById("password").value;
+  
+  let user = {
+    username:uName,
+    password:pWord
+  };
 
-	let credentials = {
-		un: username,
-		pwd: password
-	}
+//let response = await fetch(url+"login", {
+	let response = await fetch(url +"login", {
+    method:"POST",
+    body: JSON.stringify(user),
+    credentials:"include"
+  });
 
-    let response = await fetch("http://localhost:8080/ERS/login",
-    {
-    	method:	"POST",  
-    	body: JSON.stringify(credentials)
-    })
-      
-	if(response.status === 201){
-		console.log("Success!");
-		console.log(response);
-		logInAlt(true);
-        
-    } else{
-        console.log("Failure!");
-        console.log(response);
-		logInAlt(false);
-    }
+  if(response.status===200){
+    let rows = document.getElementsByClassName("row");
+    let h1 = document.createElement('h1');
+    h1.className = "col-sm-12";
+    h1.style.textAlign = "center";
+    h1.innerText= uName+" has successfully logged in."
+    rows[0].replaceChildren(h1);
+    rows[1].innerHTML="";
+    revealDivs();
+  }else{
+    console.log("could not log in");
+    console.log(response);
+  }
 }
 
-function logInAlt(boolValue){
-	const loggedInDiv = document.createElement("button");
-	const trueNode = document.createTextNode("You are now logged in.");
-	
-	if (true){
-		loggedInDiv.appendChild(trueNode);
-		element.appendChild(loggedInDiv);	
-	}
+function revealDivs(){
+  let divs = document.getElementsByTagName("div");
+
+  for (let div of divs){
+    div.hidden=false;
+  }
 }

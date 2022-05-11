@@ -19,6 +19,9 @@ public class UserController {
 	private ObjectMapper mapper = new ObjectMapper();
 
 	public void login(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+			
+		System.out.println("=======hello from user controller");
+		
 		BufferedReader reader = req.getReader();
 		
 		StringBuilder stBuilder = new StringBuilder();
@@ -31,10 +34,11 @@ public class UserController {
 		}
 		
 		String body = new String(stBuilder);
-		System.out.println(body);
 		
 		User user = mapper.readValue(body, User.class);
-		User authenticatedUser = authService.login(user.getUsername(), user.getPassword());
+		System.out.println("reached authservice");
+		User authenticatedUser = authService.login(user.getUsername(), user.getPassword()).get();
+		System.out.println("passed authservice");
 		
 		if(authenticatedUser != null) {
 			HttpSession session = req.getSession();

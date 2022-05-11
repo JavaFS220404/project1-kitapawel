@@ -14,12 +14,12 @@
   	<description></description>
   	<display-name>ERSServlet</display-name>
   	<servlet-name>ERSServlet</servlet-name>
-  	<servlet-class>com.revature.servlet.ERSServlet</servlet-class>
+  	<servlet-class>com.revature.servlets.ERSServlet</servlet-class>
   </servlet>
   
   <servlet-mapping> 
   	<servlet-name>ERSServlet</servlet-name>
-  	<url-pattern>/ERS/*</url-pattern>
+  	<url-pattern>/app/*</url-pattern>
   </servlet-mapping>
   
 </web-app>

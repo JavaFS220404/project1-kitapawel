@@ -2,7 +2,9 @@ package com.revature.services;
 
 import com.revature.exceptions.UserDoesNotExistException;
 import com.revature.exceptions.WrongPasswordException;
+import com.revature.models.Reimbursement;
 import com.revature.models.User;
+import com.revature.repositories.UserDAO;
 
 import java.util.Optional;
 
@@ -29,27 +31,37 @@ public class AuthService {
      *     <li>Must return user object if the user logs in successfully.</li>
      * </ul>
      */
-    public User login(String username, String password) {
+    public Optional<User> login(String username, String password) throws WrongPasswordException {
     	UserService us = new UserService();
-
-    	Optional<User> opt = us.getByUsername(username);
-    	User loginUser = opt.get();
+    	UserDAO ud = new UserDAO();
     	
-    	if (loginUser != null){
-        	try {
-    			if (loginUser.getPassword().equals(password)) {
-    				System.out.println("Access Granted! Welcome!");
-    				return loginUser;
-    			} else {
-    				throw new WrongPasswordException("Wrong username or password.");
-    			}
-        	} catch(WrongPasswordException e) {
-        		return null;
-        	}    
-    	} else {
-    		throw new UserDoesNotExistException("User does not exist.");
-    	} 	
-	
+    	Optional<User> opt = us.getByUsername(username);
+    	
+    	if(opt.isPresent()) {
+			if(opt.get().getPassword().equals(password)) {
+				return opt;
+			}else {
+				throw new WrongPasswordException();
+			}
+		}
+		Optional<User> nullOpt = Optional.of(null);
+		return nullOpt;
+    	
+    	
+//    	if (loginUser != null){
+//        	try {
+//    			if (loginUser.getPassword().equals(password)) {
+//    				System.out.println("Access Granted! Welcome!");
+//    				return loginUser;
+//    			} else {
+//    				throw new WrongPasswordException("Wrong username or password.");
+//    			}
+//        	} catch(WrongPasswordException e) {
+//        		return null;
+//        	}
+//    	} else {
+//    		throw new UserDoesNotExistException("User does not exist.");
+//    	}	
     }
 
 

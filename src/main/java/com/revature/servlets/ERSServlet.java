@@ -20,65 +20,69 @@ public class ERSServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+		
+		System.out.println("=======hello from ERS servlet");
+		
 		resp.setContentType("application/json");
 
 		resp.setStatus(404);
 
-		final String URL = req.getRequestURI().replace("/ERS/", "");
+		final String URL = req.getRequestURI().replace("/ERS/app/", "");
 
 		String[] UrlSections = URL.split("/");
-
+		
+		System.out.println("Split section: " + UrlSections[0]);
+		
 		switch (UrlSections[0]) {
 		case "login":
 			if (req.getMethod().equals("POST")) {
 				userController.login(req, resp);
 			}
 			break;
-		case "todos":
-			HttpSession session = req.getSession(false);
-			if (session != null) {
-				if (req.getMethod().equals("GET")) {
-					//todoController.getTodoList(session, resp);
-				}else if(req.getMethod().equals("POST")) {
-					BufferedReader reader = req.getReader();
-					
-					StringBuilder stBuilder = new StringBuilder();
-					
-					String line = reader.readLine();
-					
-					while(line!=null) {
-						stBuilder.append(line);
-						line = reader.readLine();
-					}
-					
-					String body = new String(stBuilder);
-					System.out.println(body);
-					
-					//Todo todo = mapper.readValue(body, Todo.class);
-					//todoController.addTodo(todo, resp);
-				}else if(req.getMethod().equals("PUT")) {
-					BufferedReader reader = req.getReader();
-					
-					StringBuilder stBuilder = new StringBuilder();
-					
-					String line = reader.readLine();
-					
-					while(line!=null) {
-						stBuilder.append(line);
-						line = reader.readLine();
-					}
-					
-					String body = new String(stBuilder);
-					System.out.println(body);
-					
-					//Todo todo = mapper.readValue(body, Todo.class);
-					//todoController.updateTodo(todo, resp);
-				}
-			} else {
-				resp.setStatus(401);
-			}
-			break;
+//		case "todos":
+//			HttpSession session = req.getSession(false);
+//			if (session != null) {
+//				if (req.getMethod().equals("GET")) {
+//					//todoController.getTodoList(session, resp);
+//				}else if(req.getMethod().equals("POST")) {
+//					BufferedReader reader = req.getReader();
+//					
+//					StringBuilder stBuilder = new StringBuilder();
+//					
+//					String line = reader.readLine();
+//					
+//					while(line!=null) {
+//						stBuilder.append(line);
+//						line = reader.readLine();
+//					}
+//					
+//					String body = new String(stBuilder);
+//					System.out.println(body);
+//					
+//					//Todo todo = mapper.readValue(body, Todo.class);
+//					//todoController.addTodo(todo, resp);
+//				}else if(req.getMethod().equals("PUT")) {
+//					BufferedReader reader = req.getReader();
+//					
+//					StringBuilder stBuilder = new StringBuilder();
+//					
+//					String line = reader.readLine();
+//					
+//					while(line!=null) {
+//						stBuilder.append(line);
+//						line = reader.readLine();
+//					}
+//					
+//					String body = new String(stBuilder);
+//					System.out.println(body);
+//					
+//					//Todo todo = mapper.readValue(body, Todo.class);
+//					//todoController.updateTodo(todo, resp);
+//				}
+//			} else {
+//				resp.setStatus(401);
+//			}
+//			break;
 		}
 	}
 

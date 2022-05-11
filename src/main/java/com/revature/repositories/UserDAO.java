@@ -1,5 +1,6 @@
 package com.revature.repositories;
 
+import com.revature.exceptions.UserDoesNotExistException;
 import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.util.ConnectionFactory;
@@ -15,7 +16,7 @@ public class UserDAO {
     /**
      * Should retrieve a User from the DB with the corresponding username or an empty optional if there is no match.
      */
-    public Optional<User> getByUsername(String username) {    	
+    public Optional<User> getByUsername(String username) throws UserDoesNotExistException {    	
     	  	
     	try(Connection conn = ConnectionFactory.getInstance().getConnection()){    		
 			String sql = "SELECT * FROM ers_users WHERE ers_users_username = ?;";			
@@ -38,16 +39,19 @@ public class UserDAO {
 					user.setRole(Role.EMPLOYEE);
 				}
 				
-				Optional<User> optional= Optional.of(user);				
-				return optional;
+				Optional<User> optional= Optional.of(user);
+				if(optional.isPresent()) {
+					return optional;
+				} else {
+					throw new UserDoesNotExistException();
+				}
 			}
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
-		}		
+		}	
 
-    	//Optional<User> opt = Optional.ofNullable(user);
-    	return null;
+    	return Optional.of(null);
     }
     
    public User getByUserID(int userID) {
