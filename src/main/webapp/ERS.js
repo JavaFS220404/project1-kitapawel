@@ -22,26 +22,15 @@ async function login(){
   });
 
   if(response.status===200){
-    let rows = document.getElementsByClassName("row");
-    let h1 = document.createElement('h1');
-    h1.className = "col-sm-12";
-    h1.style.textAlign = "center";
-    h1.innerText= uName + " has successfully logged in."
-    rows[0].replaceChildren(h1);
-    rows[1].innerHTML="";
-    revealDivs();
+    let errMsg = document.getElementById("registerMsg");
+    errMsg.innerText=uName + " has successfully logged in.";
+    //revealDivs();
   }else{
     console.log("could not log in");
+    let errMsg = document.getElementById("registerMsg");
+    errMsg.innerText="Wrong login credentials. Please try again or register.";
     console.log(response);
     revealRegisterForm(true);
-  }
-}
-
-function revealDivs(){
-  let divs = document.getElementsByTagName("div");
-
-  for (let div of divs){
-    div.hidden=false;
   }
 }
 
@@ -69,8 +58,11 @@ async function registerUser(){
   let ph = document.getElementById("newUserPhone").value;
   let addr = document.getElementById("newUserAddress").value; 
 
-  
-  console.log("making user...");
+  if (uname === "" || pwd === ""){
+	  let errMsg = document.getElementById("registerMsg");
+    errMsg.innerText="Username and password cannot be empty. Please try again.";
+    return;
+  }
   
   let userToRegister = {
     username: uname,
@@ -93,27 +85,31 @@ async function registerUser(){
 
   if(response.status===201){
     console.log("user registered succesfully");
+    let errMsg = document.getElementById("registerMsg");
+    errMsg.innerText="User registered successfully. Please login using the provided credentials.";
     revealRegisterForm(false);
   }else{
     console.log("Could not register user");
+    let errMsg = document.getElementById("registerMsg");
+    errMsg.innerText="Could not register user. User already exists. Please try again.";
     console.log(response);
   }
 }
 
 
-/* async function getTodos(){
-  let response = await fetch(url+"todos", {
+async function GetReimbursements(){
+  let response = await fetch(url+"reimbursements", {
     credentials:"include"
   });
 
   if(response.status===200){
     let list = await response.json();
 
-    populateTodoTable(list);
+    populateReimbTable(list);
   }
 }
 
-function populateTodoTable(list){
+function populateReimbTable(list){
   let tableBody = document.getElementById("todoBody");
   tableBody.innerHTML="";
   for(let todo of list){
@@ -141,7 +137,7 @@ function populateTodoTable(list){
 
 
 
-async function updateTodo(){
+async function updateReimbursements(){
   let todo = {
     id:document.getElementById("updateTodoId").value,
     name:"",
@@ -162,4 +158,4 @@ async function updateTodo(){
     console.log("Could not update Todo");
     console.log(response);
   }
-} */
+}

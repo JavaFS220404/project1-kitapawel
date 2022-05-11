@@ -42,20 +42,16 @@ public class ERSServlet extends HttpServlet {
 			break;
 		case "register":
 			if (req.getMethod().equals("GET")) {
-				System.out.println("register:GET");
-				//todoController.getTodoList(session, resp);
+
 			} else if (req.getMethod().equals("POST")) {
 				BufferedReader reader = req.getReader();
 
 				StringBuilder stBuilder = new StringBuilder();
-				System.out.println("aaaaaaa");
 				String line = reader.readLine();
-				System.out.println("bbbbb");
 				while(line!=null) {
 					stBuilder.append(line);
 					line = reader.readLine();
 				}
-				System.out.println("cccccc");
 				String body = new String(stBuilder);
 
 				User user = mapper.readValue(body, User.class);
