@@ -27,9 +27,8 @@ public class UserService {
 	/**
 	 *     Should retrieve a User with the corresponding username or an empty optional if there is no match.
      */
-	public Optional<User> getByUsername(String username) throws UserDoesNotExistException {		
-		Optional<User> opt = userDAO.getByUsername(username);
-	    return opt;
+	public Optional<User> getByUsername(String username) throws UserDoesNotExistException {
+	    return userDAO.getByUsername(username);
 	}
 	
 	public boolean createUser(String username, String password, Role role, String firstName, String lastName, String email, String phone, String address) {

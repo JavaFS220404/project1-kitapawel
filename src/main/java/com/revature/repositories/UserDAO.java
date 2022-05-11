@@ -51,7 +51,7 @@ public class UserDAO {
 			e.printStackTrace();
 		}	
 
-    	return Optional.of(null);
+    	return Optional.empty();
     }
     
    public User getByUserID(int userID) {
