@@ -44,9 +44,10 @@ public class AuthService {
 				throw new WrongPasswordException();
 			}
 		}
+    	return Optional.empty();
 		//Optional<User> nullOpt = Optional.of(null);
 		//return nullOpt;
-    	return Optional.empty();
+
 //    	if (loginUser != null){
 //        	try {
 //    			if (loginUser.getPassword().equals(password)) {

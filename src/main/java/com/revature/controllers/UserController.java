@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.exceptions.UserDoesNotExistException;
 import com.revature.models.User;
 import com.revature.services.AuthService;
 import com.revature.services.UserService;
@@ -16,6 +17,7 @@ import com.revature.services.UserService;
 public class UserController {
 	
 	private AuthService authService = new AuthService();
+	private UserService userService = new UserService();
 	private ObjectMapper mapper = new ObjectMapper();
 
 	public void login(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -33,21 +35,33 @@ public class UserController {
 			line = reader.readLine();
 		}
 		
-		String body = new String(stBuilder);
-		
+		String body = new String(stBuilder);		
 		User user = mapper.readValue(body, User.class);
+		
 		System.out.println("reached authservice");
-		User authenticatedUser = authService.login(user.getUsername(), user.getPassword()).get();
+		
+		Optional<User> authenticatedUser = authService.login(user.getUsername(), user.getPassword());
+		
+
 		System.out.println("passed authservice");
 		
-		if(authenticatedUser != null) {
+		if(authenticatedUser.isPresent()) {
 			HttpSession session = req.getSession();
-			session.setAttribute("user", authenticatedUser);
+			session.setAttribute("user", authenticatedUser.get());
 			resp.setStatus(200);
+			System.out.println("sent status 200 from usercontroller");
 		}else {
 			resp.setStatus(401);
+		}		
+	}
+	
+	public void createUser(User user, HttpServletResponse resp) {
+		if(userService.createUser(user.getUsername(), user.getPassword(), user.getRole(), user.getFirstName(), user.getLastName(), user.geteMail(), user.getPhoneNumber(), user.getAddress())) {
+			System.out.println("hello from UserController/createUser");
+			resp.setStatus(201);
+		}else {
+			resp.setStatus(400);
 		}
-		
 	}
 
 }

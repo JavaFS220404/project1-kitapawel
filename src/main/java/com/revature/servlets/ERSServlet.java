@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.controllers.UserController;
+import com.revature.models.User;
 
 
 public class ERSServlet extends HttpServlet {
@@ -39,50 +40,31 @@ public class ERSServlet extends HttpServlet {
 				userController.login(req, resp);
 			}
 			break;
-//		case "todos":
-//			HttpSession session = req.getSession(false);
-//			if (session != null) {
-//				if (req.getMethod().equals("GET")) {
-//					//todoController.getTodoList(session, resp);
-//				}else if(req.getMethod().equals("POST")) {
-//					BufferedReader reader = req.getReader();
-//					
-//					StringBuilder stBuilder = new StringBuilder();
-//					
-//					String line = reader.readLine();
-//					
-//					while(line!=null) {
-//						stBuilder.append(line);
-//						line = reader.readLine();
-//					}
-//					
-//					String body = new String(stBuilder);
-//					System.out.println(body);
-//					
-//					//Todo todo = mapper.readValue(body, Todo.class);
-//					//todoController.addTodo(todo, resp);
-//				}else if(req.getMethod().equals("PUT")) {
-//					BufferedReader reader = req.getReader();
-//					
-//					StringBuilder stBuilder = new StringBuilder();
-//					
-//					String line = reader.readLine();
-//					
-//					while(line!=null) {
-//						stBuilder.append(line);
-//						line = reader.readLine();
-//					}
-//					
-//					String body = new String(stBuilder);
-//					System.out.println(body);
-//					
-//					//Todo todo = mapper.readValue(body, Todo.class);
-//					//todoController.updateTodo(todo, resp);
-//				}
-//			} else {
-//				resp.setStatus(401);
-//			}
-//			break;
+		case "register":
+			if (req.getMethod().equals("GET")) {
+				System.out.println("register:GET");
+				//todoController.getTodoList(session, resp);
+			} else if (req.getMethod().equals("POST")) {
+				BufferedReader reader = req.getReader();
+
+				StringBuilder stBuilder = new StringBuilder();
+				System.out.println("aaaaaaa");
+				String line = reader.readLine();
+				System.out.println("bbbbb");
+				while(line!=null) {
+					stBuilder.append(line);
+					line = reader.readLine();
+				}
+				System.out.println("cccccc");
+				String body = new String(stBuilder);
+
+				User user = mapper.readValue(body, User.class);
+				System.out.println(user.toString());
+				userController.createUser(user, resp);
+			} else {
+				resp.setStatus(401);
+			}
+			break;
 		}
 	}
 

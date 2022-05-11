@@ -31,7 +31,8 @@ public class Driver {
     	System.out.println(ud.getByUsername("madn"));
     	System.out.println(ud.getByUsername("madnf"));
 //    	
-//    	us.createUser("Mom", "Dad", Role.FINANCE_MANAGER, "Anna", "Wanna", "Anna@wanna.k¹p", "123-456", "Topolowa 2");
+//    	us.createUser("Tom", "abc", Role.EMPLOYEE, "Tomas", "Woseba", "Tom@wos.com", "12223-456", "Topalawa 12");
+
 //    	   	
 //    	
     	System.out.println("================================================");
