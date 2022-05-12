@@ -3,12 +3,15 @@ const url = "http://localhost:8080/ERS/app/"
 let loginbtn = document.getElementById("loginButton");
 let registerbtn = document.getElementById("registerUserBtn");
 let getReimbursementsBtn = document.getElementById("getReimbBtn");
+let getReimbursementsByStatusBtn = document.getElementById("getReimbByStatusBtn");
 let createReimbBtn = document.getElementById("createReimbBtn");
 
 loginbtn.addEventListener("click", login);
 registerbtn.addEventListener("click", registerUser);
 getReimbursementsBtn.addEventListener("click", getReimbursements);
+getReimbursementsByStatusBtn.addEventListener("click", getReimbByStatus);
 createReimbBtn.addEventListener("click", createReimbursement);
+
 
 async function login(){
   let uName = document.getElementById("username").value;
@@ -32,6 +35,13 @@ async function login(){
     revealRegisterForm(false);
     revealReimbTable(true);
     revealCreateReimbFrom(true);
+    revealFinanceManagerFunctions(true);
+    /*console.log(response);
+    console.log(response.headers['userrole']);
+    let num = response.headers['userrole'];
+    if (num === 2){
+      revealFinanceManagerFunctions();
+    }*/
   }else{
     console.log("could not log in");
     let errMsg = document.getElementById("registerMsg");
@@ -53,6 +63,7 @@ function revealRegisterForm(boolean){
     }
   }
 }
+
 function revealLoginForm(boolean){
   let regdivs = document.getElementsByClassName("loginDiv");
   if (boolean){
@@ -68,6 +79,19 @@ function revealLoginForm(boolean){
 
 function revealReimbTable(boolean){
   let regdivs = document.getElementsByClassName("reimbDiv");
+  if (boolean){
+    for (let div of regdivs){
+      div.hidden=false;
+    }
+  } else{
+    for (let div of regdivs){
+      div.hidden=true;
+    }
+  }
+}
+
+function revealFinanceManagerFunctions(boolean){
+  let regdivs = document.getElementsByClassName("reimbDivFM");
   if (boolean){
     for (let div of regdivs){
       div.hidden=false;
@@ -103,9 +127,9 @@ async function registerUser(){
   let ph = document.getElementById("newUserPhone").value;
   let addr = document.getElementById("newUserAddress").value; 
 
-  if (uname === "" || pwd === ""){
+  if (uname === "" || pwd === "" || fn === "" || ln === "" || eml === ""|| addr === ""){
 	  let errMsg = document.getElementById("registerMsg");
-    errMsg.innerText="Username and password cannot be empty. Please try again.";
+    errMsg.innerText="Please fill in all fields and try again.";
     return;
   }
   
@@ -140,7 +164,6 @@ async function registerUser(){
     console.log(response);
   }
 }
-
 
 async function getReimbursements(){
   let response = await fetch(url+"reimbursements", {
@@ -213,6 +236,18 @@ function populateReimbTable(list){
   }
 }
 
+async function getReimbByStatus(){
+  let response = await fetch(url+"reimbursementsByStatus", {
+    credentials:"include"
+  });
+
+  if(response.status===200){
+    let list = await response.json();
+    console.log(list);
+    populateReimbTable(list);
+  }
+}
+
 async function createReimbursement(){
   
   let amt = document.getElementById("newAmount").value;
@@ -254,24 +289,21 @@ async function createReimbursement(){
 
 
 async function updateReimbursements(){
-  let todo = {
-    id:document.getElementById("updateTodoId").value,
-    name:"",
-    task:"",
-    status:document.getElementById("updateTodoStatus").value,
-    creator:null
+  let reimb = {
+    resolver: "madn",
+    
   }
 
-  let response = await fetch(url+"todos", {
+  let response = await fetch(url+"reimbursements", {
     method:"PUT",
-    body:JSON.stringify(todo),
+    body:JSON.stringify(reimb),
     credentials:"include"
   });
 
   if(response.status===200){
-    getTodos();
+    getReimbursements();
   }else{
-    console.log("Could not update Todo");
+    console.log("Could not update reimbursement");
     console.log(response);
   }
 }

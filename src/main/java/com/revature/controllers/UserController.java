@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.exceptions.UserDoesNotExistException;
+import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.services.AuthService;
 import com.revature.services.UserService;
@@ -48,11 +49,18 @@ public class UserController {
 		if(authenticatedUser.isPresent()) {
 			HttpSession session = req.getSession();
 			session.setAttribute("user", authenticatedUser.get());
+			
 			resp.setStatus(200);
+			//Integer roleID = 1;
+			//if (authenticatedUser.get().getRole().equals(Role.FINANCE_MANAGER)) {
+			//	roleID = 2;
+			//}
+			//resp.getOutputStream().write(roleID);			
 			System.out.println("sent status 200 from usercontroller");
 		}else {
 			resp.setStatus(401);
-		}		
+		}
+		//resp.getOutputStream().flush();
 	}
 	
 	public void createUser(User user, HttpServletResponse resp) {

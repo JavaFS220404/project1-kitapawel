@@ -84,8 +84,6 @@ public class ERSServlet extends HttpServlet {
 					
 					Reimbursement reimb = mapper.readValue(body, Reimbursement.class);
 					reimb.setAuthor((User)session.getAttribute("user"));
-					//int tempVar = 4;
-					//if (body.)
 					
 					System.out.println(reimb.toString());
 					reimbController.createReimbursement(reimb, resp);
