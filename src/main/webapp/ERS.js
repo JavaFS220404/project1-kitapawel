@@ -2,11 +2,11 @@ const url = "http://localhost:8080/ERS/app/"
 
 let loginbtn = document.getElementById("loginButton");
 let registerbtn = document.getElementById("registerUserBtn");
-let getReimbursements = document.getElementById("getReimbBtn");
+let getReimbursementsBtn = document.getElementById("getReimbBtn");
 
 loginbtn.addEventListener("click", login);
 registerbtn.addEventListener("click", registerUser);
-getReimbursements.addEventListener("click", getReimbursements)
+getReimbursementsBtn.addEventListener("click", getReimbursements)
 
 async function login(){
   let uName = document.getElementById("username").value;
@@ -26,7 +26,9 @@ async function login(){
   if(response.status===200){
     let errMsg = document.getElementById("registerMsg");
     errMsg.innerText=uName + " has successfully logged in.";
-    //revealDivs();
+    reveaLoginForm(false);
+    revealRegisterForm(false);
+    reveaReimbTable(true);
   }else{
     console.log("could not log in");
     let errMsg = document.getElementById("registerMsg");
@@ -48,6 +50,32 @@ function revealRegisterForm(boolean){
     }
   }
 }
+function reveaLoginForm(boolean){
+  let regdivs = document.getElementsByClassName("loginDiv");
+  if (boolean){
+    for (let div of regdivs){
+      div.hidden=false;
+    }
+  } else{
+    for (let div of regdivs){
+      div.hidden=true;
+    }
+  }
+}
+
+function reveaReimbTable(boolean){
+  let regdivs = document.getElementsByClassName("reimbDiv");
+  if (boolean){
+    for (let div of regdivs){
+      div.hidden=false;
+    }
+  } else{
+    for (let div of regdivs){
+      div.hidden=true;
+    }
+  }
+}
+
 
 async function registerUser(){
   
@@ -106,7 +134,7 @@ async function getReimbursements(){
 
   if(response.status===200){
     let list = await response.json();
-
+    console.log(list);
     populateReimbTable(list);
   }
 }
@@ -115,6 +143,7 @@ function populateReimbTable(list){
   let tableBody = document.getElementById("reimbTableBody");
   tableBody.innerHTML="";
   for(let reimb of list){
+    console.log(reimb);
     let row = document.createElement("tr");
     let id = document.createElement("td");
     let amount = document.createElement("td");
@@ -130,11 +159,31 @@ function populateReimbTable(list){
     amount.innerText = reimb.amount;
     submitted.innerText = reimb.submitted;
     resolved.innerText = reimb.resolved;
-    description.innerText = reimb.description;
-    author.innerText = reimb.author.firstName+" "+reimb.resolver.lastName;
-    resolver.innerText = reimb.resolver.firstName+" "+reimb.resolver.lastName;
+    try {
+      resolved.innerText = reimb.resolved;
+      } catch {
+        
+      } finally {
+        resolved.innerText = "no resolved yet";
+      }
+    try {
+      description.innerText = reimb.description;
+      } catch {
+        description.innerText = "no description provided";
+      }    
+    try {
+      author.innerText = reimb.author.firstName+" "+reimb.author.lastName;
+      } catch {
+        author.innerText = "";
+      }
+    try {
+      resolver.innerText = reimb.resolver.firstName+" "+reimb.resolver.lastName;
+      } catch {        
+      } finally {
+        resolver.innerText = "no resolver yet";
+      }
     status.innerText = reimb.status;
-    type.innerText = reimb.type;
+    type.innerText = reimb.reimbType;
 
     row.appendChild(id);
     row.appendChild(amount);
@@ -148,8 +197,6 @@ function populateReimbTable(list){
     tableBody.appendChild(row);
   }
 }
-
-
 
 async function updateReimbursements(){
   let todo = {

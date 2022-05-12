@@ -2,6 +2,7 @@ package com.revature.controllers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.models.Reimbursement;
+import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.services.ReimbursementService;
 
@@ -18,9 +20,17 @@ public class ReimbursementController {
 	private ObjectMapper objectMapper = new ObjectMapper();
 	
 	public void getReimbursements(HttpSession session, HttpServletResponse resp) throws IOException {
-		//User user = (User) session.getAttribute("user");
+		User user = (User) session.getAttribute("user");
+		System.out.println(user.toString());
 		
-		List<Reimbursement> reimbursements = reimbService.getAll();
+		List<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
+		
+		if (user.getRole().equals(Role.FINANCE_MANAGER)) {
+			reimbursements = reimbService.getAll();
+		} else {
+			reimbursements = reimbService.getReimbursementsByUser(user);
+		}
+
 		
 		if(reimbursements.size()==0) {
 			resp.setStatus(204);

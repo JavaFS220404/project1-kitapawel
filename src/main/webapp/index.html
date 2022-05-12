@@ -11,13 +11,14 @@
 </div>
 
 <body class="container-fluid">
-  <div class="row">
-    <label for="username" class="col-sm-3">Username: </label>
+
+  <div class="loginDiv">
+    <label for="username" class="col-sm-1">Username: </label>
     <input class="col-sm-3" type="text" id="username" name="username">
-    <label for="password" class="col-sm-3">Password</label>
+    <label for="password" class="col-sm-1">Password</label>
     <input class="col-sm-3" type="password" name="password" id="password">
   </div>
-  <div class="row">
+  <div class="loginDiv">
     <button id="loginButton" class="btn btn-success">Login</button>
   </div>
 
@@ -46,34 +47,31 @@
         </select>
       </form>
     </form>
-
-
   </div>
   <div class="registerDiv" hidden="true">
     <button class="btn btn-info" id="registerUserBtn">Register new user</button>
   </div>
 
-  <div class="row" hidden="true">
+  <div class="reimbDiv" hidden="true">
     <table class="table table-light table-striped">
       <thead>
         <tr>
           <th class="col-sm-1">Id</th>
-          <th class="col-sm-2">Amount</th>
-          <th class="col-sm-5">Submitted</th>
-          <th class="col-sm-2">Resolved</th>
-          <th class="col-sm-2">Description</th>
+          <th class="col-sm-1">Amount</th>
+          <th class="col-sm-1">Submitted</th>
+          <th class="col-sm-1">Resolved</th>
+          <th class="col-sm-3">Description</th>
           <th class="col-sm-1">Author</th>
-          <th class="col-sm-2">Resolver</th>
-          <th class="col-sm-5">Status</th>
-          <th class="col-sm-2">Type</th>
+          <th class="col-sm-1">Resolver</th>
+          <th class="col-sm-1">Status</th>
+          <th class="col-sm-1">Type</th>
         </tr>
       </thead>
       <tbody id="reimbTableBody">
-
       </tbody>
     </table>
   </div>
-  <div class="row" hidden="true">
+  <div class="reimbDiv" hidden="true">
     <button id="getReimbBtn" class="btn btn-primary">Get reimbursements</button>
   </div>
 

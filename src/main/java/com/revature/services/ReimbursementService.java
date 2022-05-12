@@ -1,6 +1,7 @@
 package com.revature.services;
 
 import com.revature.models.Reimbursement;
+import com.revature.models.Role;
 import com.revature.models.ReimbStatus;
 import com.revature.models.ReimbType;
 import com.revature.models.User;
@@ -63,6 +64,10 @@ public class ReimbursementService {
     	}
     }
 
+    public List<Reimbursement> getAll() {
+        return rDAO.getAll();
+    }
+    
     /**
      * Should retrieve all reimbursements with the correct status.
      */
@@ -70,9 +75,11 @@ public class ReimbursementService {
         return rDAO.getByStatus(status);
     }
     
-    public List<Reimbursement> getAll() {
-        return rDAO.getAll();
+    public List<Reimbursement> getReimbursementsByUser(User user) {
+        return rDAO.getByUser(user);
     }
+    
+
     
     public Optional<Reimbursement> getReimbursementByID(int id) {
     

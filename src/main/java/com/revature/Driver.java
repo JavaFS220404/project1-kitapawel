@@ -38,7 +38,7 @@ public class Driver {
 //    	
     	System.out.println("================================================");
     	
-    	System.out.println(rs.getAll());
+//    	System.out.println(rs.getAll());
 //    	System.out.println(rs.getReimbursementByID(2));
 //    	System.out.println(rs.getReimbursementsByStatus(ReimbStatus.APPROVED));
 //    	System.out.println(rs.getReimbursementsByStatus(ReimbStatus.DENIED));

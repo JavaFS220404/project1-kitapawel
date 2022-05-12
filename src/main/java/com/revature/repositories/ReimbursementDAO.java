@@ -1,6 +1,7 @@
 package com.revature.repositories;
 
 import com.revature.models.Reimbursement;
+import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.services.UserService;
 import com.revature.util.ConnectionFactory;
@@ -326,5 +327,71 @@ public class ReimbursementDAO {
 		}
 
 		return null;
+    }
+
+	public List<Reimbursement> getByUser(User user) {
+		
+    	List<Reimbursement> reimbList = new ArrayList<>();
+    	UserService us = new UserService();
+    	
+    	try(Connection conn = ConnectionFactory.getInstance().getConnection()){    		
+			String sql = "SELECT * FROM ers_reimbursements WHERE ers_reimb_author = " + user.getId() + ";";			
+			PreparedStatement statement = conn.prepareStatement(sql);			
+				
+			ResultSet result = statement.executeQuery();			
+			
+			while(result.next()) {
+		    	Reimbursement reimb = new Reimbursement();
+				reimb.setId(result.getInt("ers_reimb_id"));
+				reimb.setAmount(result.getDouble("ers_reimb_amount"));
+				reimb.setSubmitted(result.getTimestamp("ers_reimb_submitted"));
+				reimb.setResolved(result.getTimestamp("ers_reimb_resolved"));
+				reimb.setDescription(result.getString("ers_reimb_descr"));
+				
+				int tempUserID = result.getInt("ers_reimb_author"); 
+				User tempUser = us.getByUserID(tempUserID);
+				reimb.setAuthor(tempUser);
+
+				tempUserID = result.getInt("ers_reimb_resolver");
+				tempUser = us.getByUserID(tempUserID);
+				reimb.setResolver(tempUser);
+
+//				int tempUserID = result.getInt("ers_reimb_author"); 
+//				Optional<User> tempUser = us.getByUserID(tempUserID);
+//				reimb.setAuthor(tempUser.get());
+//
+//				tempUserID = result.getInt("ers_reimb_resolver");
+//				tempUser = us.getByUserID(tempUserID);
+//				reimb.setResolver(tempUser.get());
+				
+
+				int reimbStatusID = result.getInt("ers_reimb_status_id");
+				if(reimbStatusID == 1) {
+					reimb.setStatus(ReimbStatus.APPROVED);
+				} else if (reimbStatusID == 2) {
+					reimb.setStatus(ReimbStatus.DENIED);
+				} else {
+					reimb.setStatus(ReimbStatus.PENDING);
+				}
+
+				int reimbTypeID = result.getInt("ers_reimb_type_id");
+				if(reimbTypeID == 1) {
+					reimb.setReimbType(ReimbType.FOOD);
+				} else if (reimbTypeID == 2) {
+					reimb.setReimbType(ReimbType.LODGING);
+				} else if (reimbTypeID == 3) {
+					reimb.setReimbType(ReimbType.TRAVEL);
+				} else {
+					reimb.setReimbType(ReimbType.OTHER);
+				}
+				System.out.println(reimb.toString());
+				reimbList.add(reimb);
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return reimbList;
     }
 }
