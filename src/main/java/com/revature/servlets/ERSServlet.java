@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.controllers.ReimbursementController;
 import com.revature.controllers.UserController;
+import com.revature.models.Reimbursement;
 import com.revature.models.User;
 
 
@@ -68,26 +69,28 @@ public class ERSServlet extends HttpServlet {
 			if (session != null) {
 				if (req.getMethod().equals("GET")) {
 					reimbController.getReimbursements(session, resp);
+				}	else if(req.getMethod().equals("POST")) {
+					BufferedReader reader = req.getReader();
+					
+					StringBuilder stBuilder = new StringBuilder();
+					
+					String line = reader.readLine();
+					while(line!=null) {
+						stBuilder.append(line);
+						line = reader.readLine();
+					}
+					String body = new String(stBuilder);
+					System.out.println(body);
+					
+					Reimbursement reimb = mapper.readValue(body, Reimbursement.class);
+					reimb.setAuthor((User)session.getAttribute("user"));
+					//int tempVar = 4;
+					//if (body.)
+					
+					System.out.println(reimb.toString());
+					reimbController.createReimbursement(reimb, resp);
 				}
-//					else if(req.getMethod().equals("POST")) {
-//					BufferedReader reader = req.getReader();
-//					
-//					StringBuilder stBuilder = new StringBuilder();
-//					
-//					String line = reader.readLine();
-//					
-//					while(line!=null) {
-//						stBuilder.append(line);
-//						line = reader.readLine();
-//					}
-//					
-//					String body = new String(stBuilder);
-//					System.out.println(body);
-//					
-//					Todo todo = mapper.readValue(body, Todo.class);
-//					todo.setCreator((User)session.getAttribute("user"));
-//					todoController.addTodo(todo, resp);
-//				}else if(req.getMethod().equals("PUT")) {
+//					else if(req.getMethod().equals("PUT")) {
 //					BufferedReader reader = req.getReader();
 //					
 //					StringBuilder stBuilder = new StringBuilder();

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.models.ReimbType;
 import com.revature.models.Reimbursement;
 import com.revature.models.Role;
 import com.revature.models.User;
@@ -31,7 +32,6 @@ public class ReimbursementController {
 			reimbursements = reimbService.getReimbursementsByUser(user);
 		}
 
-		
 		if(reimbursements.size()==0) {
 			resp.setStatus(204);
 		}else {
@@ -42,13 +42,13 @@ public class ReimbursementController {
 		}
 	}
 	
-//	public void addTodo(Todo todo, HttpServletResponse resp) {
-//		if(todoService.newTodo(todo)) {
-//			resp.setStatus(201);
-//		}else {
-//			resp.setStatus(400);
-//		}
-//	}
+	public void createReimbursement(Reimbursement reimb, HttpServletResponse resp) {
+		if(reimbService.createReimbursement(reimb.getAuthor(), reimb.getAmount(), reimb.getDescription(), reimb.getReimbType())) {
+			resp.setStatus(201);
+		}else {
+			resp.setStatus(400);
+		}
+	}
 //	
 //	public void updateTodo(Todo todo, HttpServletResponse resp) {
 //		if(todoService.updateTodo(todo)) {

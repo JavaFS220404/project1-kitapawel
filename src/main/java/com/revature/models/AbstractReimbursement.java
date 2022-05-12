@@ -31,8 +31,9 @@ public class AbstractReimbursement {
         super();
     }
     
-    public AbstractReimbursement(double amount) {
+    public AbstractReimbursement(User author, double amount) {
         super();
+        this.author = author;
         this.amount = amount;
     }
 

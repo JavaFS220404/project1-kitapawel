@@ -95,10 +95,10 @@ public class ReimbursementService {
     //ers_reimbursements (ers_reimb_amount, ers_reimb_submitted, ers_reimb_resolved, "
 	//		+ "ers_reimb_descr, ers_reimb_receipt, ers_reimb_author, ers_reimb_resolver, ers_reimb_status_id, ers_reimb_type_id)"
     
-	public boolean createReimbursement(double amount, String description, ReimbType reimbType) {
+	public boolean createReimbursement(User author, double amount, String description, ReimbType reimbType) {
 		UserService us = new UserService();
 		final Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		Reimbursement reimb = new Reimbursement(amount, timestamp, description, reimbType);
+		Reimbursement reimb = new Reimbursement(author, amount, timestamp, description, reimbType);
 		if (rDAO.createReimbursement(reimb)) {
 			return true;
 		}

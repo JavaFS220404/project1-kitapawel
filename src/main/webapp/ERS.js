@@ -3,10 +3,12 @@ const url = "http://localhost:8080/ERS/app/"
 let loginbtn = document.getElementById("loginButton");
 let registerbtn = document.getElementById("registerUserBtn");
 let getReimbursementsBtn = document.getElementById("getReimbBtn");
+let createReimbBtn = document.getElementById("createReimbBtn");
 
 loginbtn.addEventListener("click", login);
 registerbtn.addEventListener("click", registerUser);
-getReimbursementsBtn.addEventListener("click", getReimbursements)
+getReimbursementsBtn.addEventListener("click", getReimbursements);
+createReimbBtn.addEventListener("click", createReimbursement);
 
 async function login(){
   let uName = document.getElementById("username").value;
@@ -26,9 +28,10 @@ async function login(){
   if(response.status===200){
     let errMsg = document.getElementById("registerMsg");
     errMsg.innerText=uName + " has successfully logged in.";
-    reveaLoginForm(false);
+    revealLoginForm(false);
     revealRegisterForm(false);
-    reveaReimbTable(true);
+    revealReimbTable(true);
+    revealCreateReimbFrom(true);
   }else{
     console.log("could not log in");
     let errMsg = document.getElementById("registerMsg");
@@ -50,7 +53,7 @@ function revealRegisterForm(boolean){
     }
   }
 }
-function reveaLoginForm(boolean){
+function revealLoginForm(boolean){
   let regdivs = document.getElementsByClassName("loginDiv");
   if (boolean){
     for (let div of regdivs){
@@ -63,7 +66,7 @@ function reveaLoginForm(boolean){
   }
 }
 
-function reveaReimbTable(boolean){
+function revealReimbTable(boolean){
   let regdivs = document.getElementsByClassName("reimbDiv");
   if (boolean){
     for (let div of regdivs){
@@ -76,6 +79,18 @@ function reveaReimbTable(boolean){
   }
 }
 
+function revealCreateReimbFrom(boolean){
+  let regdivs = document.getElementsByClassName("createReimbDiv");
+  if (boolean){
+    for (let div of regdivs){
+      div.hidden=false;
+    }
+  } else{
+    for (let div of regdivs){
+      div.hidden=true;
+    }
+  }
+}
 
 async function registerUser(){
   
@@ -197,6 +212,46 @@ function populateReimbTable(list){
     tableBody.appendChild(row);
   }
 }
+
+async function createReimbursement(){
+  
+  let amt = document.getElementById("newAmount").value;
+  let desc = document.getElementById("newDesc").value;
+  let type = document.getElementById("newReimbType").value;
+
+  if (amt === "" || desc === ""){
+	  let errMsg = document.getElementById("registerMsg");
+    errMsg.innerText="Please provide data in all fields.";
+    return;
+  }
+  
+  let reimbursementToCreate = {
+    amount: amt,
+    description: desc,
+    reimbType: type
+  }
+
+  console.log(reimbursementToCreate);
+
+  let response = await fetch(url+"reimbursements", {
+    method:"POST",
+    body:JSON.stringify(reimbursementToCreate),
+    credentials:"include"
+  });
+
+  if(response.status===201){
+    console.log("Reimbursement created successfuly.");
+    let errMsg = document.getElementById("registerMsg");
+    errMsg.innerText="Reimbursement created successfully.";
+    getReimbursements();
+  }else{
+    console.log("Could not register reimbursement.");
+    let errMsg = document.getElementById("registerMsg");
+    errMsg.innerText="Could not register reimbursement. Please try again.";
+    console.log(response);
+  }
+}
+
 
 async function updateReimbursements(){
   let todo = {

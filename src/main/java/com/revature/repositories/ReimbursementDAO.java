@@ -247,15 +247,14 @@ public class ReimbursementDAO {
 			statement.setTimestamp(++count, reimbursementToBeRegistered.getSubmitted());
 			statement.setString(++count, reimbursementToBeRegistered.getDescription());
 
-			int tempVar = 1;
-			//TODO get logged in user's ID
-			statement.setInt(++count, tempVar);
+			statement.setInt(++count, reimbursementToBeRegistered.getAuthor().getId());
 			
 			//if (reimbursementToBeRegistered.getStatus() == ReimbStatus.APPROVED) {tempVar = 1;}
 			//else if(reimbursementToBeRegistered.getStatus() == ReimbStatus.DENIED) {tempVar = 2;}
 			//else {tempVar = 3;}
 			statement.setInt(++count, 3); // hardcoded as we create with pending always
 			
+			int tempVar = 4;
 			if (reimbursementToBeRegistered.getReimbType() == ReimbType.FOOD) {tempVar = 1;}
 			else if(reimbursementToBeRegistered.getReimbType() == ReimbType.LODGING) {tempVar = 2;}
 			else if(reimbursementToBeRegistered.getReimbType() == ReimbType.TRAVEL) {tempVar = 3;}
