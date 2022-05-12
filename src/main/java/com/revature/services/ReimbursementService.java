@@ -70,6 +70,10 @@ public class ReimbursementService {
         return rDAO.getByStatus(status);
     }
     
+    public List<Reimbursement> getAll() {
+        return rDAO.getAll();
+    }
+    
     public Optional<Reimbursement> getReimbursementByID(int id) {
     
     	Optional<Reimbursement> optReimb = rDAO.getById(id);

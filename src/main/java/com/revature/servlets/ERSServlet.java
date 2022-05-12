@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.revature.controllers.ReimbursementController;
 import com.revature.controllers.UserController;
 import com.revature.models.User;
 
@@ -18,6 +19,7 @@ public class ERSServlet extends HttpServlet {
 
 	private ObjectMapper mapper = new ObjectMapper();
 	private UserController userController = new UserController();
+	private ReimbursementController reimbController = new ReimbursementController();
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -57,6 +59,53 @@ public class ERSServlet extends HttpServlet {
 				User user = mapper.readValue(body, User.class);
 				System.out.println(user.toString());
 				userController.createUser(user, resp);
+			} else {
+				resp.setStatus(401);
+			}
+			break;
+		case "reimbursements":
+			HttpSession session = req.getSession(false);
+			if (session != null) {
+				if (req.getMethod().equals("GET")) {
+					reimbController.getReimbursements(session, resp);
+				}
+//					else if(req.getMethod().equals("POST")) {
+//					BufferedReader reader = req.getReader();
+//					
+//					StringBuilder stBuilder = new StringBuilder();
+//					
+//					String line = reader.readLine();
+//					
+//					while(line!=null) {
+//						stBuilder.append(line);
+//						line = reader.readLine();
+//					}
+//					
+//					String body = new String(stBuilder);
+//					System.out.println(body);
+//					
+//					Todo todo = mapper.readValue(body, Todo.class);
+//					todo.setCreator((User)session.getAttribute("user"));
+//					todoController.addTodo(todo, resp);
+//				}else if(req.getMethod().equals("PUT")) {
+//					BufferedReader reader = req.getReader();
+//					
+//					StringBuilder stBuilder = new StringBuilder();
+//					
+//					String line = reader.readLine();
+//					
+//					while(line!=null) {
+//						stBuilder.append(line);
+//						line = reader.readLine();
+//					}
+//					
+//					String body = new String(stBuilder);
+//					System.out.println(body);
+//					
+//					Todo todo = mapper.readValue(body, Todo.class);
+//					todo.setCreator((User)session.getAttribute("user"));
+//					todoController.updateTodo(todo, resp);
+//				}
 			} else {
 				resp.setStatus(401);
 			}

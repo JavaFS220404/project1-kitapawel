@@ -23,13 +23,14 @@ public class Driver {
     	ReimbursementDAO rd = new ReimbursementDAO(); 
     	ReimbursementService rs = new ReimbursementService();
     	
+    	
 //    	System.out.println(us.getByUsername(null));
-    	System.out.println(us.getByUsername("madn"));
+//    	System.out.println(us.getByUsername("madn"));
 //    	System.out.println(us.getByUserID(4));
-    	System.out.println(us.getByUsername("deadd"));
+//    	System.out.println(us.getByUsername("deadd"));
 //    	System.out.println(us.getByUserID(2211));
-    	System.out.println(ud.getByUsername("madn"));
-    	System.out.println(ud.getByUsername("madnf"));
+//    	System.out.println(ud.getByUsername("madn"));
+//    	System.out.println(ud.getByUsername("madnf"));
 //    	
 //    	us.createUser("Tom", "abc", Role.EMPLOYEE, "Tomas", "Woseba", "Tom@wos.com", "12223-456", "Topalawa 12");
 
@@ -37,7 +38,7 @@ public class Driver {
 //    	
     	System.out.println("================================================");
     	
-
+    	System.out.println(rs.getAll());
 //    	System.out.println(rs.getReimbursementByID(2));
 //    	System.out.println(rs.getReimbursementsByStatus(ReimbStatus.APPROVED));
 //    	System.out.println(rs.getReimbursementsByStatus(ReimbStatus.DENIED));

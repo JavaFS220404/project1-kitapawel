@@ -2,9 +2,11 @@ const url = "http://localhost:8080/ERS/app/"
 
 let loginbtn = document.getElementById("loginButton");
 let registerbtn = document.getElementById("registerUserBtn");
+let getReimbursements = document.getElementById("getReimbBtn");
 
 loginbtn.addEventListener("click", login);
 registerbtn.addEventListener("click", registerUser);
+getReimbursements.addEventListener("click", getReimbursements)
 
 async function login(){
   let uName = document.getElementById("username").value;
@@ -97,7 +99,7 @@ async function registerUser(){
 }
 
 
-async function GetReimbursements(){
+async function getReimbursements(){
   let response = await fetch(url+"reimbursements", {
     credentials:"include"
   });
@@ -110,27 +112,39 @@ async function GetReimbursements(){
 }
 
 function populateReimbTable(list){
-  let tableBody = document.getElementById("todoBody");
+  let tableBody = document.getElementById("reimbTableBody");
   tableBody.innerHTML="";
-  for(let todo of list){
+  for(let reimb of list){
     let row = document.createElement("tr");
     let id = document.createElement("td");
-    let name = document.createElement("td");
-    let task = document.createElement("td");
+    let amount = document.createElement("td");
+    let submitted = document.createElement("td");
+    let resolved = document.createElement("td");
+    let description = document.createElement("td");
+    let author = document.createElement("td");
+    let resolver = document.createElement("tr");
     let status = document.createElement("td");
-    let user = document.createElement("td");
+    let type = document.createElement("td");
 
-    id.innerText = todo.id;
-    name.innerText = todo.name;
-    task.innerText = todo.task;
-    user.innerText = todo.creator.firstName+" "+todo.creator.lastName;
-    status.innerText = todo.status;
+    id.innerText = reimb.id;
+    amount.innerText = reimb.amount;
+    submitted.innerText = reimb.submitted;
+    resolved.innerText = reimb.resolved;
+    description.innerText = reimb.description;
+    author.innerText = reimb.author.firstName+" "+reimb.resolver.lastName;
+    resolver.innerText = reimb.resolver.firstName+" "+reimb.resolver.lastName;
+    status.innerText = reimb.status;
+    type.innerText = reimb.type;
 
     row.appendChild(id);
-    row.appendChild(name);
-    row.appendChild(task);
+    row.appendChild(amount);
+    row.appendChild(submitted);
+    row.appendChild(resolved);
+    row.appendChild(description);
+    row.appendChild(author);
+    row.appendChild(resolver);
     row.appendChild(status);
-    row.appendChild(user);
+    row.appendChild(type);
     tableBody.appendChild(row);
   }
 }
