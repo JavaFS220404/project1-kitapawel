@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -14,10 +15,12 @@ import com.revature.models.Reimbursement;
 import com.revature.models.Role;
 import com.revature.models.User;
 import com.revature.services.ReimbursementService;
+import com.revature.services.UserService;
 
 public class ReimbursementController {
 	
 	private ReimbursementService reimbService = new ReimbursementService();
+	private UserService userService = new UserService();
 	private ObjectMapper objectMapper = new ObjectMapper();
 	
 	public void getReimbursements(HttpSession session, HttpServletResponse resp) throws IOException {
@@ -49,14 +52,22 @@ public class ReimbursementController {
 			resp.setStatus(400);
 		}
 	}
-//	
-//	public void updateTodo(Todo todo, HttpServletResponse resp) {
-//		if(todoService.updateTodo(todo)) {
-//			resp.setStatus(200);
-//		}else {
-//			resp.setStatus(400);
-//		}
-//	}
+	
+	public void updateReimbursement(Reimbursement reimb, HttpServletResponse resp) {
+		Optional<User> u = Optional.ofNullable(userService.getByUsername(reimb.getResolver().getUsername()).get());
+		User concreteUser = new User();
+		if (u.isPresent()) {
+			concreteUser = u.get();
+		} else {
+			concreteUser = null;
+		}
+		
+		if(reimbService.process(reimbService.getReimbursementByID(reimb.getId()), reimb.getStatus(), concreteUser)) {
+			resp.setStatus(200);
+		}else {
+			resp.setStatus(400);
+		}
+	}
 
 }
 

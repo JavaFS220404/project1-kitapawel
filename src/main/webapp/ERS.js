@@ -1,16 +1,20 @@
 const url = "http://localhost:8080/ERS/app/"
 
+let lguname = "";
+
 let loginbtn = document.getElementById("loginButton");
 let registerbtn = document.getElementById("registerUserBtn");
 let getReimbursementsBtn = document.getElementById("getReimbBtn");
 let getReimbursementsByStatusBtn = document.getElementById("getReimbByStatusBtn");
 let createReimbBtn = document.getElementById("createReimbBtn");
+let uppdateReimbBtn = document.getElementById("updateReimbBtn");
 
 loginbtn.addEventListener("click", login);
 registerbtn.addEventListener("click", registerUser);
 getReimbursementsBtn.addEventListener("click", getReimbursements);
 getReimbursementsByStatusBtn.addEventListener("click", getReimbByStatus);
 createReimbBtn.addEventListener("click", createReimbursement);
+updateReimbBtn.addEventListener("click", updateReimbursement);
 
 
 async function login(){
@@ -30,6 +34,7 @@ async function login(){
 
   if(response.status===200){
     let errMsg = document.getElementById("registerMsg");
+    lguname = uName;
     errMsg.innerText=uName + " has successfully logged in.";
     revealLoginForm(false);
     revealRegisterForm(false);
@@ -91,7 +96,7 @@ function revealReimbTable(boolean){
 }
 
 function revealFinanceManagerFunctions(boolean){
-  let regdivs = document.getElementsByClassName("reimbDivFM");
+  let regdivs = document.getElementsByClassName("updateReimbDiv");
   if (boolean){
     for (let div of regdivs){
       div.hidden=false;
@@ -288,11 +293,14 @@ async function createReimbursement(){
 }
 
 
-async function updateReimbursements(){
+async function updateReimbursement(){
   let reimb = {
-    resolver: "madn",
-    
+    resolver: lguname,
+    id: document.getElementById("reimbID").value,
+    status: document.getElementById("updateReimbStatus").value
   }
+
+  console.log(reimb);
 
   let response = await fetch(url+"reimbursements", {
     method:"PUT",

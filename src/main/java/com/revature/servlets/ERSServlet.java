@@ -26,7 +26,7 @@ public class ERSServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		System.out.println("=======hello from ERS servlet");
-		
+
 		resp.setContentType("application/json");
 
 		resp.setStatus(404);
@@ -37,9 +37,11 @@ public class ERSServlet extends HttpServlet {
 		
 		System.out.println("Split section: " + UrlSections[0]);
 		
+		
 		switch (UrlSections[0]) {
 		case "login":
 			if (req.getMethod().equals("POST")) {
+				HttpSession session = req.getSession(false);
 				userController.login(req, resp);
 			}
 			break;
@@ -88,29 +90,30 @@ public class ERSServlet extends HttpServlet {
 					System.out.println(reimb.toString());
 					reimbController.createReimbursement(reimb, resp);
 				}
-//					else if(req.getMethod().equals("PUT")) {
-//					BufferedReader reader = req.getReader();
-//					
-//					StringBuilder stBuilder = new StringBuilder();
-//					
-//					String line = reader.readLine();
-//					
-//					while(line!=null) {
-//						stBuilder.append(line);
-//						line = reader.readLine();
-//					}
-//					
-//					String body = new String(stBuilder);
-//					System.out.println(body);
-//					
-//					Todo todo = mapper.readValue(body, Todo.class);
-//					todo.setCreator((User)session.getAttribute("user"));
-//					todoController.updateTodo(todo, resp);
-//				}
+					else if(req.getMethod().equals("PUT")) {
+					BufferedReader reader = req.getReader();
+					
+					StringBuilder stBuilder = new StringBuilder();
+					
+					String line = reader.readLine();
+					
+					while(line!=null) {
+						stBuilder.append(line);
+						line = reader.readLine();
+					}
+					
+					String body = new String(stBuilder);
+					System.out.println(body);
+					
+					Reimbursement reimb = mapper.readValue(body, Reimbursement.class);
+					reimb.setResolver((User)session.getAttribute("user"));
+					reimbController.updateReimbursement(reimb, resp);
+
 			} else {
 				resp.setStatus(401);
 			}
 			break;
+			}
 		}
 	}
 
@@ -123,34 +126,6 @@ public class ERSServlet extends HttpServlet {
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req, resp);
 	}
-	
-	
-//	@Override
-//	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-//		throws ServletException, IOException{
-//		
-//		BufferedReader reader = req.getReader();
-//		StringBuilder stringBuilder = new StringBuilder();
-//		String line = reader.readLine(); // Gets first line from buffered reader
-//		while (line != null) {
-//			stringBuilder.append(line);
-//			line = reader.readLine(); // Gets the next line, returns null at end of body.
-//		}
-//		String body = new String(stringBuilder);
-//		
-//		IncomingAuthenticationData user = new ObjectMapper().readValue(body, IncomingAuthenticationData.class);
-//		
-//		AuthService authService = new AuthService();
-//		
-//		User potentiallyLoggedInUser = authService.login(user.getUn(), user.getPwd()); 
-//		
-//		if (potentiallyLoggedInUser != null){
-//			System.out.println("Login successful");
-//			resp.setStatus(201);
-//		} else {
-//			System.out.println("Login not successful");
-//			resp.setStatus(406);
-//		}
-//	}
+
 }
 	
