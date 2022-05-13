@@ -54,11 +54,9 @@ async function login(){
 }
 
 async function logout(){
-  console.log("before logout");
   let response = await fetch(url+"logout", {
     credentials:"include"
   });
-  console.log("after logout");
   if(response.status===200){
     location.href = "index.html";
   }
