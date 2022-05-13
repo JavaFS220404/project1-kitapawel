@@ -34,8 +34,10 @@ async function login(){
 
   if(response.status===200){
     let errMsg = document.getElementById("registerMsg");
+    let wlcmMsg = document.getElementById("welcomeMsg");
     lguname = uName;
     errMsg.innerText=uName + " has successfully logged in.";
+    wlcmMsg.innerText="Welcome to the ERS app " + uName+".";
     revealLoginForm(false);
     revealRegisterForm(false);
     revealReimbTable(true);
@@ -204,10 +206,7 @@ function populateReimbTable(list){
     resolved.innerText = reimb.resolved;
     try {
       resolved.innerText = reimb.resolved;
-      } catch {
-        
-      } finally {
-        resolved.innerText = "no resolved yet";
+      } catch {        
       }
     try {
       description.innerText = reimb.description;
@@ -222,8 +221,6 @@ function populateReimbTable(list){
     try {
       resolver.innerText = reimb.resolver.firstName+" "+reimb.resolver.lastName;
       } catch {        
-      } finally {
-        resolver.innerText = "no resolver yet";
       }
     status.innerText = reimb.status;
     type.innerText = reimb.reimbType;
@@ -309,8 +306,15 @@ async function updateReimbursement(){
   });
 
   if(response.status===200){
+    let errMsg = document.getElementById("registerMsg");
+    errMsg.innerText="Successfuly updated the reimbursement.";
     getReimbursements();
-  }else{
+  }else if (response.status===401) {
+    let errMsg = document.getElementById("registerMsg");
+    errMsg.innerText="Current user is not a finance manager. Only finance managers may update reimbursements.";
+    console.log("User is not a finance manager");
+    console.log(response);
+  } else {
     console.log("Could not update reimbursement");
     console.log(response);
   }

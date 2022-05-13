@@ -296,8 +296,7 @@ public class ReimbursementDAO {
     		
 			PreparedStatement prepStatement = conn.prepareStatement(sql);
 			
-			int count = 0;
-			
+			int count = 0;			
 	
 			prepStatement.setInt(++count, unprocessedReimbursement.getResolver().getId());
 			prepStatement.setTimestamp(++count, unprocessedReimbursement.getResolved());
@@ -306,15 +305,6 @@ public class ReimbursementDAO {
 			else if(unprocessedReimbursement.getStatus() == ReimbStatus.DENIED) {tempVar = 2;}
 			else {tempVar = 3;}
 			prepStatement.setInt(++count, tempVar);
-//			
-//			prepStatement.setInt(1, 4);
-//			prepStatement.setTimestamp(2, unprocessedReimbursement.getResolved());
-//			int tempVar = 1;			
-//			if (unprocessedReimbursement.getStatus() == ReimbStatus.APPROVED) {tempVar = 1;}
-//			else if(unprocessedReimbursement.getStatus() == ReimbStatus.DENIED) {tempVar = 2;}
-//			else {tempVar = 3;}
-//			prepStatement.setInt(3, 2);
-//			prepStatement.setInt (4, 21);
 
 			prepStatement.execute();
 

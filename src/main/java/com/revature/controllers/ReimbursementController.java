@@ -62,11 +62,17 @@ public class ReimbursementController {
 			concreteUser = null;
 		}
 		
-		if(reimbService.process(reimbService.getReimbursementByID(reimb.getId()), reimb.getStatus(), concreteUser)) {
-			resp.setStatus(200);
-		}else {
-			resp.setStatus(400);
+		if (concreteUser.getRole().equals(Role.FINANCE_MANAGER)) {
+			if(reimbService.process(reimbService.getReimbursementByID(reimb.getId()), reimb.getStatus(), concreteUser)) {
+				resp.setStatus(200);
+			}else {
+				resp.setStatus(400);
+			}
+		} else {
+			resp.setStatus(401);
 		}
+		
+
 	}
 
 }

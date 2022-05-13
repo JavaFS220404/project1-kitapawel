@@ -2,6 +2,7 @@ package com.revature.servlets;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -10,16 +11,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.revature.controllers.ReimbursementController;
 import com.revature.controllers.UserController;
+import com.revature.models.ReimbStatus;
 import com.revature.models.Reimbursement;
 import com.revature.models.User;
+import com.revature.services.UserService;
 
 
 public class ERSServlet extends HttpServlet {
 
 	private ObjectMapper mapper = new ObjectMapper();
 	private UserController userController = new UserController();
+	private UserService userService = new UserService();
 	private ReimbursementController reimbController = new ReimbursementController();
 
 	@Override
@@ -105,9 +110,26 @@ public class ERSServlet extends HttpServlet {
 					String body = new String(stBuilder);
 					System.out.println(body);
 					
-					Reimbursement reimb = mapper.readValue(body, Reimbursement.class);
-					reimb.setResolver((User)session.getAttribute("user"));
-					reimbController.updateReimbursement(reimb, resp);
+					Map jsonJavaRootObject = new Gson().fromJson(body, Map.class);
+					Integer rId = Integer.valueOf((String)jsonJavaRootObject.get("id"));
+					String status = (String)jsonJavaRootObject.get("status");
+					String resolver = (String)jsonJavaRootObject.get("resolver");
+
+					
+					Reimbursement reimbUpdateData = new Reimbursement();
+					reimbUpdateData.setResolver(userService.getByUsername(resolver).get());
+					reimbUpdateData.setId(rId);
+					ReimbStatus st = ReimbStatus.PENDING;
+					if(status.equals("DENIED")) {
+						st = ReimbStatus.DENIED;
+					} else if (status.equals("APPROVED")) {
+						st = ReimbStatus.APPROVED;
+					}						
+					reimbUpdateData.setStatus(st);
+					
+					System.out.println(reimbUpdateData.toString());
+					
+					reimbController.updateReimbursement(reimbUpdateData, resp);
 
 			} else {
 				resp.setStatus(401);
