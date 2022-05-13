@@ -3,6 +3,7 @@ const url = "http://localhost:8080/ERS/app/"
 let lguname = "";
 
 let loginbtn = document.getElementById("loginButton");
+let logoutbtn = document.getElementById("logoutButton");
 let registerbtn = document.getElementById("registerUserBtn");
 let getReimbursementsBtn = document.getElementById("getReimbBtn");
 let getReimbursementsByStatusBtn = document.getElementById("getReimbByStatusBtn");
@@ -10,12 +11,12 @@ let createReimbBtn = document.getElementById("createReimbBtn");
 let uppdateReimbBtn = document.getElementById("updateReimbBtn");
 
 loginbtn.addEventListener("click", login);
+logoutbtn.addEventListener("click", logout);
 registerbtn.addEventListener("click", registerUser);
 getReimbursementsBtn.addEventListener("click", getReimbursements);
 getReimbursementsByStatusBtn.addEventListener("click", getReimbByStatus);
 createReimbBtn.addEventListener("click", createReimbursement);
 updateReimbBtn.addEventListener("click", updateReimbursement);
-
 
 async function login(){
   let uName = document.getElementById("username").value;
@@ -43,18 +44,23 @@ async function login(){
     revealReimbTable(true);
     revealCreateReimbFrom(true);
     revealFinanceManagerFunctions(true);
-    /*console.log(response);
-    console.log(response.headers['userrole']);
-    let num = response.headers['userrole'];
-    if (num === 2){
-      revealFinanceManagerFunctions();
-    }*/
   }else{
     console.log("could not log in");
     let errMsg = document.getElementById("registerMsg");
     errMsg.innerText="Wrong login credentials. Please try again or register.";
     console.log(response);
     revealRegisterForm(true);
+  }
+}
+
+async function logout(){
+  console.log("before logout");
+  let response = await fetch(url+"logout", {
+    credentials:"include"
+  });
+  console.log("after logout");
+  if(response.status===200){
+    location.href = "index.html";
   }
 }
 
@@ -73,6 +79,7 @@ function revealRegisterForm(boolean){
 
 function revealLoginForm(boolean){
   let regdivs = document.getElementsByClassName("loginDiv");
+  console.log(regdivs);
   if (boolean){
     for (let div of regdivs){
       div.hidden=false;
@@ -127,7 +134,7 @@ async function registerUser(){
   
   let uname = document.getElementById("newUsername").value;
   let pwd = document.getElementById("newPassword").value;
-  let role = "EMPLOYEE"; /* document.getElementById("userRoleForm").elements["foo"] */
+  let role = document.getElementById("newUserRole").value;
   let fn = document.getElementById("newUserFname").value;
   let ln = document.getElementById("newUserLname").value;
   let eml = document.getElementById("newUserEmail").value;
@@ -288,7 +295,6 @@ async function createReimbursement(){
     console.log(response);
   }
 }
-
 
 async function updateReimbursement(){
   let reimb = {

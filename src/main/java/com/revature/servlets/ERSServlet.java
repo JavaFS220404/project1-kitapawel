@@ -50,6 +50,13 @@ public class ERSServlet extends HttpServlet {
 				userController.login(req, resp);
 			}
 			break;
+		case "logout":
+			if (req.getMethod().equals("GET")) {
+				HttpSession session= req.getSession();
+				session.invalidate();
+				resp.setStatus(200);
+			}
+			break;
 		case "register":
 			if (req.getMethod().equals("GET")) {
 

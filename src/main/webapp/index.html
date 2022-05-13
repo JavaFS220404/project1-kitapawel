@@ -7,7 +7,7 @@
 <style>
     body {
       display: flex;
-      background-color: rgb(244, 244, 244);
+      background-color: rgb(232, 232, 232);
       flex-direction: column;
 
     }
@@ -16,20 +16,20 @@
 
 <body class="container-fluid">
  
-  <div class="row" style="margin: 10px;">
+  <div class="d-flex justify-content-center row" style="margin: 10px;">
     <label class="label label-info col-sm-5" style="background-color:lightgray; font-size: larger; margin: 2px; font-weight: bold;" id="welcomeMsg">Welcome to the ERS application.</label> 
     <label class="label label-info col-sm-5" style="background-color: lightgray; font-size: larger; margin: 2px; font-weight: bold;" id="registerMsg">Please sign in or register.</label>
-    <button class="btn btn-info col-sm-1" id="logoutBtn">Logout</button>
+    <button class="btn btn-info col-sm-1" id="logoutButton">Logout</button>
   </div>
 
-  <div class="loginDiv row" style="align-content:stretch;">
-    <label style="font-size: larger; margin: 2px;" for="username" class="col-sm-1">Username: </label>
-    <input class="col-sm-3" type="text" id="username" name="username">
-    <label style="font-size: larger; margin: 2px;" for="password" class="col-sm-1">Password</label>
-    <input class="col-sm-3" type="password" name="password" id="password">
+  <div class="d-flex justify-content-center row loginDiv" style="align-content:stretch;">
+    <label style="font-size: larger; margin: 5px;" for="username" class="col-sm-1">Username: </label>
+    <input class="col-sm-2" type="text" id="username" name="username">
+    <label style="font-size: larger; margin: 5px;" for="password" class="col-sm-1">Password</label>
+    <input class="col-sm-2" type="password" name="password" id="password">
   </div>
-  <div class="loginDiv row">
-    <button style="font-size: larger; margin: 5px;" id="loginButton" class="btn btn-light" style="align-content:stretch;">Login</button>
+  <div class="d-flex justify-content-center row loginDiv">
+    <button style="border: 1px;border-color: cadetblue; font-size: larger; font-weight: bold; margin: 5px;" id="loginButton" class="btn btn-light" style="align-content:center;">Login</button>
   </div>
 
   <div class="registerDiv row" hidden="true">
@@ -59,11 +59,11 @@
     </form>
   </div>
   <div class="registerDiv row" hidden="true">
-    <button class="btn btn-light" id="registerUserBtn">Register new user</button>
+    <button style="font-size: larger; margin: 5px; font-weight: bold;" class="btn btn-light" id="registerUserBtn">Register new user</button>
   </div>
 
   <div class="reimbDiv" hidden="true">
-    <table class="table table-light table-striped">
+    <table class="table table-grey table-striped">
       <thead>
         <tr>
           <th class="col-sm-1">Id</th>
@@ -82,10 +82,10 @@
     </table>
   </div>
   <div class="reimbDiv" hidden="true">
-    <button id="getReimbBtn" class="btn btn-light">Get reimbursements</button>
+    <button style="font-size: larger; margin: 5px;" id="getReimbBtn" class="btn btn-light">Get reimbursements</button>
   </div>
   <div class="reimbDivFM" hidden="true">
-    <button id="getReimbByStatusBtn" class="btn btn-light">Get reimbursements by Status</button>
+    <button style="font-size: larger; margin: 5px; font-weight: bold;" id="getReimbByStatusBtn" class="btn btn-light">Get reimbursements by Status</button>
   </div>
 
   <div class="createReimbDiv" hidden="true">
@@ -107,7 +107,7 @@
     </form>    
   </div>
   <div class="createReimbDiv" hidden="true">
-    <button class="btn btn-light" id="createReimbBtn">Create reimbursement</button>
+    <button class="btn btn-light" style="font-size: larger; margin: 5px;" id="createReimbBtn">Create reimbursement</button>
   </div>
 
   <div class="updateReimbDiv" hidden="true">
@@ -126,7 +126,7 @@
     </form>    
   </div>
   <div class="updateReimbDiv" hidden="true">
-    <button class="btn btn-light" id="updateReimbBtn">Update reimbursement</button>
+    <button class="btn btn-light" style="font-size: larger; margin: 5px;" id="updateReimbBtn">Update reimbursement</button>
   </div>
 
 		<script src="ERS.js"></script>
